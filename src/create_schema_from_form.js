@@ -3,18 +3,13 @@ const odca = odcaPkg.com.thehumancolossuslab.odca
 import Kotlin from 'kotlin'
 var HashMap_init = Kotlin.kotlin.collections.HashMap_init_q3lmfv$;
 import { TYPE_MAPPER } from './config/constants'
-import { get_schemas } from './persistence'
 
 const facade = new odca.Facade()
 
-export const createSchemaFromForm = (form) => {
+export const createSchemaFromForm = (baseForm, form) => {
     const baseInfo = HashMap_init()
     const attributes = []
 
-    const baseForm = get_schemas().find(s => s.uuid == form.uuid);
-    if (!baseForm) {
-        throw "Form cannot be exported"
-    }
     baseInfo.put_xwzc9p$("name", baseForm.name)
     baseInfo.put_xwzc9p$("description", baseForm.description)
     baseInfo.put_xwzc9p$("classification", baseForm.classification)

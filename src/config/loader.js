@@ -5,11 +5,7 @@ import moment from 'moment';
 import {FontAwesomeRegister} from "@/config/font-awesome-register";
 
 // load jquery
-if (!window.$) {
-    let $ = require('jquery');
-    window.$ = $;
-    window.jQuery = $;
-}
+require('jquery');
 
 // load jquery ui
 import 'webpack-jquery-ui';
@@ -33,11 +29,6 @@ FontAwesomeRegister.register();
 window._ = require('underscore'); // override
 require('@/config/helper_function');
 _.mixin({deepExtend: underscoreDeepExtend(_)});
-
-// // load moment
-if (!window.moment) {
-    window.moment = moment;
-}
 
 import('@/assets/js/jquery.noty.packaged');
 require('@/assets/js/validate.min.js');

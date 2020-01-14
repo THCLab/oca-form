@@ -5,7 +5,7 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Preview Your Form</h4>
+                    <h4 class="modal-title">{{ label }}</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -34,13 +34,15 @@
         props: ['form'],
         data: () => ({
             previewModal: null,
-            formData: null
+            formData: null,
+            label: ''
         }),
         methods: {
             openModal(formData) {
                 // set data
                 this.formData = _.cloneDeep(formData);
                 this.formData._uniqueId = Math.random();
+                this.label = this.formData.label
 
                 // open
                 this.previewModal.modal('show');

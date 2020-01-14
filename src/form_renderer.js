@@ -13,6 +13,7 @@ export function renderForm(schemaData) {
   }
   const form = {
     uuid: schemaData.uuid,
+    label: schemaData.schemaBase.name,
     sections: [],
     type: ""
   }
@@ -118,5 +119,5 @@ export function renderForm(schemaData) {
     }
   }
 
-  Communicator.publish('form_rendered', { schema, form })
+  return { schema, form }
 }
