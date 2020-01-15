@@ -10,7 +10,7 @@ module.exports = {
     filename: 'main.js',
 
     libraryTarget: 'umd',
-    library: 'odca-tool'
+    library: 'odca-form'
   },
   module: {
     rules: [
