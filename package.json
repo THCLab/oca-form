@@ -1,6 +1,6 @@
 {
   "name": "odca-form",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "repository": "github:THCLab/odca-form",
   "license": "GPL-3.0",
   "main": "dist/main.js",

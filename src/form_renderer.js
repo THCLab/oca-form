@@ -1,6 +1,15 @@
 import { FORM_CONSTANTS, TYPE_MAPPER } from './config/constants'
 import Communicator from './communicator'
 
+export function renderEmptyForm(uuid, label) {
+  return {
+    uuid: uuid,
+    label: label,
+    sections: [_.cloneDeep(FORM_CONSTANTS.Section)],
+    type: ""
+  }
+}
+
 export function renderForm(schemaData) {
   Communicator.publish('store_schema', schemaData)
   const schema = {
