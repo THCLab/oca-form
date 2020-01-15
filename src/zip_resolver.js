@@ -15,7 +15,9 @@ export const resolveZipFile = async (file) => {
   return schemas
 }
 
-export const exportToZip = (schema) => {
+export const exportToZip = (schemaOdca) => {
+    const facade = new odca.Facade()
+    const schema = JSON.parse(facade.serialize(schemaOdca))
     const zip = new JSZip()
     const schemaName = schema.schemaBase.name
 
