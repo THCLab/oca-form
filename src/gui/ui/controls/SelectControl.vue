@@ -37,8 +37,10 @@
 
 <script>
     import {Hooks} from '@/gui/components/hook_lists';
+    import { EventHandlerConstant, eventBus } from '@/template/handler/event_handler'
     import Select2Control from "@/third_party_controls/Select2Control";
     import Select2MultipleControl from "@/third_party_controls/Select2MultipleControl";
+
     export default {
         name: "SelectControl",
         components: {Select2MultipleControl, Select2Control},
@@ -55,12 +57,18 @@
                         if (_.isArray(data)) {
                             self.dataSource = data;
                         } else {
-                            SethPhatToaster.error(`Control data error: ${this.control.label}.`);
+                            eventBus.$emit(
+                              EventHandlerConstant.ERROR,
+                              `Control data error: ${this.control.label}.`
+                            )
                             console.error(`Data for select control of ${this.control.label} is wrong format!`);
                         }
                     })
                     .fail(err => {
-                        SethPhatToaster.error(`Failed to load data for control: ${this.control.label}.`);
+                        eventBus.$emit(
+                          EventHandlerConstant.ERROR,
+                          `Failed to load data for control: ${this.control.label}.`
+                        )
                         console.error("Request for Select Data Source Failed: ", err);
                     });
             } else {

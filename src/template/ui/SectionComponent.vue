@@ -47,6 +47,7 @@
     import SectionConfigModal from "./common/SectionConfigModal";
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
     import {Hooks} from '@/template/components/hook_lists';
+    import {eventBus, EventHandlerConstant} from '@/template/handler/event_handler';
 
     export default {
         components: {RowComponent, FontAwesomeIcon},
@@ -75,7 +76,10 @@
             },
             removeSection(index) {
                 if (this.form.sections[index].row.controls.length > 0) {
-                    SethPhatToaster.error("Can't remove this category because it's still have attributes inside.");
+                    eventBus.$emit(
+                      EventHandlerConstant.ERROR,
+                      "Can't remove this category because it's still have attributes inside."
+                    )
                     return;
                 }
 
