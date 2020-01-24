@@ -1,5 +1,6 @@
 import { FORM_CONSTANTS, TYPE_MAPPER } from './config/constants'
 import Communicator from './communicator'
+import DateFormater from './date_formater'
 
 export function renderEmptyForm(uuid, label) {
   return {
@@ -41,6 +42,9 @@ export function renderForm(schemaData) {
     const formatOverlays = schemaData.formatOverlays.array_hd7ov6$_0
     if (formatOverlays.length != 0) {
       format = formatOverlays[0].attrFormats.get_11rb$(attrUuid)
+      if(format) {
+        format = DateFormater.toJQuery(format)
+      }
     }
 
     options = attrType.includes("Array") ? [] : null
