@@ -16,7 +16,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <!--<button type="button" class="btn btn-default" @click="getData">Get Data</button>-->
+                    <button type="button" class="btn btn-primary" @click="saveForm">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
 
@@ -47,11 +47,14 @@
                 // open
                 this.previewModal.modal('show');
             },
+            saveForm() {
+                const data = Object.assign({}, ...Object.values(this.getData()))
+            },
             closeModal() {
                 this.previewModal.modal('hide');
             },
             getData() {
-                console.log(this.$refs.FormBuilderGui.getValue());
+                return this.$refs.FormBuilderGui.getValue();
             }
         },
         mounted() {
