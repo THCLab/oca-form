@@ -51,7 +51,7 @@ export function renderForm(schemaData) {
         if (entries) {
           attrType = "Array[Text]"
           options = entries.array_hd7ov6$_0.map(entry => {
-            return { id: "x", text: entry }
+            return { id: entry, text: entry }
           })
           break
         }
