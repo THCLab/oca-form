@@ -27,6 +27,7 @@
 
 <script>
     import FormBuilderGui from '@/gui/FormBuilderGui';
+    import { EventHandlerConstant, eventBus } from '@/template/handler/event_handler'
 
     export default {
         name: "PreviewComponent",
@@ -49,6 +50,7 @@
             },
             saveForm() {
                 const data = Object.assign({}, ...Object.values(this.getData()))
+                eventBus.$emit(EventHandlerConstant.SAVE_PREVIEW, data)
             },
             closeModal() {
                 this.previewModal.modal('hide');

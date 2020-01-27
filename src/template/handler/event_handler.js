@@ -4,6 +4,7 @@ var EventHandlerConstant = {
     REMOVE_CONTROL: 'remove_control',
 
     EXPORT_FORM: 'export_form',
+    SAVE_PREVIEW: 'save_preview',
     ERROR: 'error_occurred',
     // sidebar
     ACTIVATE_EDITOR_SIDEBAR: 'activate_editor_sidebar',
