@@ -87,6 +87,12 @@
         watch: {
             'control.isMultiple': function() {
                 this.updateAttributeType()
+            },
+            'control.dataOptions': {
+                handler(newValues) {
+                  return newValues.forEach(v => v.id = v.text)
+                },
+                deep: true
             }
         },
         mounted() {
