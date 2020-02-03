@@ -3941,10 +3941,10 @@ obuf@^1.0.0, obuf@^1.1.2:
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-odca@>=0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/odca/-/odca-0.0.8.tgz#442c2b09bd7621063bc6ec21322f5ca4dab652af"
-  integrity sha512-Qj3yk+zuCmOxJEekYg2s52nGg2faLs17V3jWtsa7pLe8YLiHL+wgX5nOYmPYb8nRRLeHm5pWOjdGusGy1Q9iRA==
+odca@>=0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/odca/-/odca-0.0.9.tgz#f1402d5684225b201404197951930c2b672f82d3"
+  integrity sha512-LyjOoMjcZ8YfbQw7KYty5b5UJs4/0F5dSeupelN/I4ocJZrO8wxunl8j6hBe/sTePGW/9MBpC9pgHzW+KqCajw==
   dependencies:
     kotlin "^1.3.40"
     link-module-alias "^1.2.0"

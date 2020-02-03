@@ -62,9 +62,9 @@ export function renderForm(schemaData) {
       }
     }
 
-    const encodeOverlays = schemaData.encodeOverlays.array_hd7ov6$_0
-    encoding = encodeOverlays[0].attrEncoding.get_11rb$(attrUuid)
-    const defaultEncoding = encodeOverlays[0].defaultEncoding
+    const encodeOverlays = schemaData.characterEncodingOverlays.array_hd7ov6$_0
+    encoding = encodeOverlays[0].attrCharacterEncoding.get_11rb$(attrUuid)
+    const defaultEncoding = encodeOverlays[0].defaultCharacterEncoding
 
     const informationOverlays = schemaData.informationOverlays.array_hd7ov6$_0
     if (informationOverlays.length != 0) {
@@ -108,7 +108,8 @@ export function renderForm(schemaData) {
     section.label = categoryLabel
     form.sections.push(section)
 
-    const categoryAttributes = labelOverlay.categoryAttributes.get_11rb$(categoryLink).array_hd7ov6$_0
+    const categoryHasAttributes = labelOverlay.categoryAttributes.get_11rb$(categoryLink) ? true : false
+    const categoryAttributes = categoryHasAttributes ? labelOverlay.categoryAttributes.get_11rb$(categoryLink).array_hd7ov6$_0 : []
 
     categoryAttributes.forEach(attrUuid => {
       let attrName = leftAttributes.remove_11rb$(attrUuid)
