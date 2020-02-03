@@ -35,6 +35,10 @@ export function renderForm(schemaData) {
 
   const generateControl = (attrUuid, attrName) => {
     let attrType = schemaData.schemaBase.attributesType.get_11rb$(attrUuid)
+    if (attrType == "Array[Object]") {
+      attrType = "Array[Text]"
+    }
+    let type = TYPE_MAPPER.typeInput[attrType] || "text"
 
     let label, format, options, encoding, information
     label = labelOverlays[0].attrLabels.get_11rb$(attrUuid)
@@ -47,13 +51,15 @@ export function renderForm(schemaData) {
       }
     }
 
-    options = attrType.includes("Array") ? [] : null
     const entryOverlays = schemaData.entryOverlays.array_hd7ov6$_0
     if (entryOverlays.length != 0) {
       for(let entryOverlay of entryOverlays) {
         let entries = entryOverlay.attrEntries.get_11rb$(attrUuid)
         if (entries) {
-          attrType = "Array[Text]"
+          if (attrType != "Boolean") {
+            type = "select"
+          }
+
           options = entries.array_hd7ov6$_0.map(entry => {
             return { id: entry, text: entry }
           })
@@ -76,7 +82,6 @@ export function renderForm(schemaData) {
       }
     }
 
-    const type = TYPE_MAPPER.typeInput[attrType] || "text"
     const controlName = _.domUniqueID(`control_${type}_`)
 
     return {...FORM_CONSTANTS.Control,
@@ -86,10 +91,12 @@ export function renderForm(schemaData) {
         name: controlName,
         fieldName: controlName,
         attrName: attrName,
+        attrType: attrType,
         isPII: pii_attributes.includes(attrUuid),
         label: label || null,
         dateFormat: format || null,
         dataOptions: options || null,
+        isMultiple: attrType.includes("Array"),
         encoding: encoding || defaultEncoding,
         information: information,
         timeFormat: "HH:mm"

@@ -45,7 +45,7 @@ export const createSchemaFromForm = (baseForm, form) => {
           attributes.push(
             new odca.AttributeDto(
               control.attrName,
-              TYPE_MAPPER.inputType[control.type],
+              control.attrType,
               control.isPII,
               categories,
               control.label,

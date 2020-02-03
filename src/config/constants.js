@@ -42,6 +42,7 @@ FORM_CONSTANTS.Control = {
     information: "",
     isPII: false,
     attrName: "",
+    attrType: "",
     encoding: "utf-8",
 
     // validation

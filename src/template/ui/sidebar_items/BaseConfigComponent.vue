@@ -5,7 +5,7 @@
                 <label>Attribute type</label>
             </div>
             <div class="col-md-6">
-                <input type="text" readonly class="form-control" :value="attributeType">
+                <input type="text" readonly class="form-control" :value="control.attrType">
             </div>
         </div>
 
@@ -128,15 +128,11 @@
         },
         mounted() {
             $('[data-toggle="tooltip"]').tooltip(); // trigger tooltip
+            this.control.attrType = TYPE_MAPPER.inputType[this.control.type]
             this.setAttributeNameValue();
         },
         updated() {
             this.setAttributeNameValue();
-        },
-        computed: {
-            attributeType() {
-                return TYPE_MAPPER.inputType[this.control.type]
-            }
         }
     }
 </script>
