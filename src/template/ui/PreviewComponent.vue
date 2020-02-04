@@ -32,7 +32,7 @@
     export default {
         name: "PreviewComponent",
         components: {FormBuilderGui},
-        props: ['form'],
+        props: ['form', 'formInput', 'readonly'],
         data: () => ({
             previewModal: null,
             formData: null,
@@ -44,9 +44,33 @@
                 this.formData = _.cloneDeep(formData);
                 this.formData._uniqueId = Math.random();
                 this.label = this.formData.label
+                if(this.formInput) {
+                    this.fillForm(this.formInput)
+                    if(this.readonly == null) {
+                        this.readonly = true
+                    }
+                }
+                if(this.readonly) {
+                    this.formData.sections.forEach( section => {
+                        section.row.controls.forEach(control => {
+                            control.readonly = true
+                        })
+                    })
+                }
 
                 // open
                 this.previewModal.modal('show');
+            },
+            fillForm(input) {
+                this.formData.sections.forEach( section => {
+                    section.row.controls.forEach(control => {
+                        if(!input[control.attrName]) {
+                            eventBus.$emit(EventHandlerConstant.ERROR, "Invalid data")
+                            throw "Invalid data"
+                        }
+                        control.value = input[control.attrName]
+                    })
+                })
             },
             saveForm() {
                 const data = Object.assign({}, ...Object.values(this.getData()))
