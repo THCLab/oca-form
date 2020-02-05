@@ -1,3 +1,8 @@
+import * as odcaPkg from 'odca'
+const odca = odcaPkg.com.thehumancolossuslab.odca
+import Kotlin from 'kotlin'
+var HashMap_init = Kotlin.kotlin.collections.HashMap_init_q3lmfv$;
+
 import { FORM_CONSTANTS, TYPE_MAPPER } from './config/constants'
 import Communicator from './communicator'
 import DateFormater from './date_formater'
@@ -9,6 +14,15 @@ export function renderEmptyForm(uuid, label) {
     sections: [_.cloneDeep(FORM_CONSTANTS.Section)],
     type: ""
   }
+}
+
+export function deserializeSchema(schema) {
+  const facade = new odca.Facade()
+  const schemaInput = HashMap_init()
+  for (const key in schema) {
+    schemaInput.put_xwzc9p$(key, JSON.stringify(schema[key]))
+  }
+  return facade.deserializeSchemas([schemaInput])[0]
 }
 
 export function renderForm(schemaData) {
