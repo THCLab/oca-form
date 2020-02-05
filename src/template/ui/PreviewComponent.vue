@@ -16,7 +16,7 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @click="saveForm">Save</button>
+                    <button type="button" class="btn btn-primary" v-if="!formReadonly" @click="saveForm">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
 
@@ -32,25 +32,26 @@
     export default {
         name: "PreviewComponent",
         components: {FormBuilderGui},
-        props: ['form', 'formInput', 'readonly'],
+        props: ['form', 'readonly'],
         data: () => ({
             previewModal: null,
             formData: null,
+            formReadonly: null,
             label: ''
         }),
         methods: {
-            openModal(formData) {
+            openModal(formData, formInput = null) {
                 // set data
                 this.formData = _.cloneDeep(formData);
                 this.formData._uniqueId = Math.random();
                 this.label = this.formData.label
-                if(this.formInput) {
-                    this.fillForm(this.formInput)
-                    if(this.readonly == null) {
-                        this.readonly = true
+                if(formInput) {
+                    this.fillForm(formInput)
+                    if(this.formReadonly == null) {
+                        this.formReadonly = true
                     }
                 }
-                if(this.readonly) {
+                if(this.formReadonly) {
                     this.formData.sections.forEach( section => {
                         section.row.controls.forEach(control => {
                             control.readonly = true
@@ -62,7 +63,7 @@
                 this.previewModal.modal('show');
             },
             fillForm(input) {
-                this.formData.sections.forEach( section => {
+                this.formData.sections.forEach(section => {
                     section.row.controls.forEach(control => {
                         if(!input[control.attrName]) {
                             eventBus.$emit(EventHandlerConstant.ERROR, "Invalid data")
@@ -85,6 +86,7 @@
         },
         mounted() {
             this.previewModal = $(this.$el);
+            this.formReadonly = this.readonly
         }
     }
 </script>
