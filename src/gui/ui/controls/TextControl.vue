@@ -4,7 +4,12 @@
             <slot name="label"/>
 
             <div class="col-md-8">
-                <input type="text"
+                <a v-if="control.attrType == 'URI' && control.readonly == true"
+                   target="_blank"
+                   :href="control.value">{{control.value}}</a>
+
+                <input v-else
+                       type="text"
                        class="form-control"
                        :readonly="this.control.readonly"
                        :name="control.fieldName"
