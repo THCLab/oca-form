@@ -16,16 +16,8 @@ export function renderEmptyForm(uuid, label) {
   }
 }
 
-export function deserializeSchema(schema) {
-  const facade = new odca.Facade()
-  const schemaInput = HashMap_init()
-  for (const key in schema) {
-    schemaInput.put_xwzc9p$(key, JSON.stringify(schema[key]))
-  }
-  return facade.deserializeSchemas([schemaInput])[0]
-}
-
-export function renderForm(schemaData) {
+export function renderForm(schemaObjects) {
+  const schemaData = deserializeSchema(schemaObjects)
   Communicator.publish('store_schema', schemaData)
   const schema = {
     name: schemaData.schemaBase.name,
@@ -155,4 +147,25 @@ export function renderForm(schemaData) {
   }
 
   return { schema, form }
+}
+
+const deserializeSchema = (schema) => {
+  const facade = new odca.Facade()
+  const schemaInput = HashMap_init()
+
+  schema.forEach((o, i) => {
+    const type = o.type.split('/')
+    let key
+    if(type[1] == 'schema_base') {
+      key = 'schemaBase'
+    } else if (type[1] == 'overlay') {
+      key = type[2].split('_').map(w => {
+          return w.charAt(0).toUpperCase() + w.slice(1)
+      }).join('') + `Overlay-${i}`
+    }
+
+    schemaInput.put_xwzc9p$(key, JSON.stringify(o))
+  })
+
+  return facade.deserializeSchemas([schemaInput])[0]
 }
