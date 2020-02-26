@@ -3,6 +3,7 @@ const odca = odcaPkg.com.thehumancolossuslab.odca
 import Kotlin from 'kotlin'
 var HashMap_init = Kotlin.kotlin.collections.HashMap_init_q3lmfv$;
 import { TYPE_MAPPER } from './config/constants'
+import DateFormater from './date_formater'
 
 const facade = new odca.Facade()
 
@@ -33,6 +34,10 @@ export const createSchemaFromForm = (baseForm, form) => {
             throw "Attribute name cannot be empty"
           }
 
+          const format = (control.dateFormat &&
+            control.dateFormat.length > 0) ?
+            DateFormater.toStandard(control.dateFormat) : null
+
           const entry = (control.dataOptions &&
             control.dataOptions.length > 0) ?
             control.dataOptions.map(o => o.text) : null
@@ -40,11 +45,11 @@ export const createSchemaFromForm = (baseForm, form) => {
           attributes.push(
             new odca.AttributeDto(
               control.attrName,
-              TYPE_MAPPER.inputType[control.type],
+              control.attrType,
               control.isPII,
               categories,
               control.label,
-              control.dateFormat,
+              format,
               entry,
               control.encoding,
               control.information,
@@ -53,5 +58,9 @@ export const createSchemaFromForm = (baseForm, form) => {
       })
     })
 
-    return facade.renderSchema(baseInfo, attributes)
+  return JSON.parse(
+    facade.serialize(
+      facade.renderSchema(baseInfo, attributes)
+    )
+  )
 }

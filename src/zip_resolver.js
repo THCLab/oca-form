@@ -1,21 +1,6 @@
 import JSZip from 'jszip'
-import { saveAs } from 'file-saver'
-import * as odcaPkg from 'odca'
-const odca = odcaPkg.com.thehumancolossuslab.odca
-import Kotlin from 'kotlin'
-var HashMap_init = Kotlin.kotlin.collections.HashMap_init_q3lmfv$;
 
-export const resolveZipFile = async (file) => {
-  const facade = new odca.Facade()
-  let schemas
-  await parseFile(file).then((results) => {
-    schemas = facade.deserializeSchemas(results)
-  })
-
-  return schemas
-}
-
-export const exportToZip = (schema) => {
+export const exportToZip = async (schema) => {
     const zip = new JSZip()
     const schemaName = schema.schemaBase.name
 
@@ -34,11 +19,7 @@ export const exportToZip = (schema) => {
         }
     }
 
-    zip.generateAsync({type:"blob"}).then((content) => {
-        const filename = Math.random().toString(16).substring(2) +
-          Math.random().toString(16).substring(2) +
-          Math.random().toString(16).substring(9)
-
+    return await zip.generateAsync({type:"blob"}).then((content) => {
         if (window.Cypress) {
             const fr = new FileReader()
             fr.addEventListener('load', () => {
@@ -50,11 +31,11 @@ export const exportToZip = (schema) => {
             return
         }
 
-        saveAs(content, `${filename}.zip`);
+      return content
     });
 }
 
-const parseFile = async (file) => {
+export const resolveZipFile = async (file) => {
     const jszip = new JSZip()
     const results = []
     const promises = []
@@ -89,10 +70,8 @@ const parseFile = async (file) => {
     })
     await Promise.all(promises.map((schemaPromise) => {
         return Promise.all(schemaPromise.map(({value}) => value)).then((schema)=> {
-            let result = HashMap_init()
-            schema.forEach((content, i) => {
-                result.put_xwzc9p$(schemaPromise[i]["name"], content)
-            })
+            let result = []
+            schema.forEach(content => result.push(JSON.parse(content)))
             results.push(result)
         })
     }))

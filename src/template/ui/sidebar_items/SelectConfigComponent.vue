@@ -61,6 +61,11 @@
                 type: Object
             },
         },
+        data() {
+            return {
+                attributeType: this.control.attrType
+            }
+        },
         methods: {
             addOption() {
                 this.control.dataOptions.push(_.clone(FORM_CONSTANTS.OptionDefault));
@@ -70,6 +75,24 @@
             },
             dataAjaxModal(e) {
                 this.$refs.SelectAjaxModal.openModal();
+            },
+            updateAttributeType() {
+                if (this.control.isMultiple) {
+                  this.control.attrType = `Array[${this.attributeType}]`
+                } else {
+                  this.control.attrType = this.attributeType
+                }
+            }
+        },
+        watch: {
+            'control.isMultiple': function() {
+                this.updateAttributeType()
+            },
+            'control.dataOptions': {
+                handler(newValues) {
+                  return newValues.forEach(v => v.id = v.text)
+                },
+                deep: true
             }
         },
         mounted() {
@@ -77,6 +100,11 @@
             if (this.control.dataOptions.length <= 0) {
                 this.addOption();
             }
+
+            if (this.control.attrType.includes('Array')) {
+                this.attributeType = this.control.attrType.match(/\[(.+?)\]/)[1]
+            }
+            this.updateAttributeType()
         },
     }
 </script>

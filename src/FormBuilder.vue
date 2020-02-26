@@ -15,9 +15,7 @@
     import {Hooks as GUI_Hooks} from './gui/components/hook_lists';
     import {Hooks as Template_Hooks} from './template/components/hook_lists';
     import {FormHandler} from "./gui/handler/form_handler";
-    import {SethPhatToaster} from "./config/toaster";
-
-    window.SethPhatToaster = SethPhatToaster;
+    import { EventHandlerConstant, eventBus } from './template/handler/event_handler'
 
     // import
     import FormBuilderTemplate from './template/FormBuilderTemplate';
@@ -102,7 +100,10 @@
 
                 var hasError = FormHandler.validate(this.form);
                 if (showError && hasError) {
-                    SethPhatToaster.error("There are errors on the page. Please rectify the errors so the action can be completed.");
+                    eventBus.$emit(
+                      EventHandlerConstant.ERROR,
+                      "There are errors on the page. Please rectify the errors so the action can be completed."
+                    )
                 }
 
                 // true => no error | false => errors

@@ -49,6 +49,15 @@
             },
             download() {
                 eventBus.$emit(EventHandlerConstant.EXPORT_FORM, this.form)
+            },
+            publish(publishInfo) {
+                eventBus.$emit(
+                  EventHandlerConstant.PUBLISH_FORM,
+                  {
+                    info: publishInfo,
+                    form: this.form
+                  }
+                )
             }
         }
     }

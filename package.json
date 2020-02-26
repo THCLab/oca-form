@@ -1,8 +1,8 @@
 {
   "name": "odca-form",
-  "version": "0.0.1",
+  "version": "0.0.13",
   "repository": "github:THCLab/odca-form",
-  "license" : "GPL-3.0",
+  "license": "GPL-3.0",
   "main": "dist/main.js",
   "scripts": {
     "build": "webpack",
@@ -15,14 +15,13 @@
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.12",
     "core-js": "^2.6.5",
-    "file-saver": "^2.0.2",
     "imports-loader": "^0.8.0",
     "jquery": ">=3.4.0",
     "jsonld": "^1.5.3",
     "jszip": "^3.2.2",
     "moment": "^2.22.2",
     "node-sass": "^4.13.0",
-    "odca": ">=0.0.8",
+    "odca": ">=0.0.9",
     "popper.js": "^1.14.4",
     "sass-loader": "^8.0.2",
     "select2": "^4.0.6-rc.1",
@@ -51,6 +50,7 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1",
+    "webpack-node-externals": "^1.7.2",
     "workbox-webpack-plugin": "^4.3.1"
   }
 }

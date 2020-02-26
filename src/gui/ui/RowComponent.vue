@@ -38,6 +38,7 @@
     import {FormHandler} from "@/gui/handler/form_handler";
     import ControlComponent from "./ControlComponent";
     import {Hooks} from '@/gui/components/hook_lists';
+    import { EventHandlerConstant, eventBus } from '@/template/handler/event_handler'
 
     export default {
         name: "RowComponent",
@@ -50,7 +51,10 @@
         methods: {
             addDynamicObj() {
                 if (this.section.maxInstance > 0 && this.section.instances.length === this.section.maxInstance) {
-                    SethPhatToaster.error("Maximum instances reached, can't create more.");
+                    eventBus.$emit(
+                      EventHandlerConstant.ERROR,
+                      "Maximum instances reached, can't create more."
+                    )
                     return;
                 }
 
@@ -67,7 +71,10 @@
             },
             removeDynamicObj(index) {
                 if (this.section.minInstance === this.section.instances.length) {
-                    SethPhatToaster.error("Minimum instances reached, can't remove more.");
+                    eventBus.$emit(
+                      EventHandlerConstant.ERROR,
+                      "Minimum instances reached, can't remove more."
+                    )
                     return;
                 }
 

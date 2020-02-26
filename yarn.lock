@@ -2067,11 +2067,6 @@ file-loader@^5.0.2:
     loader-utils "^1.2.3"
     schema-utils "^2.5.0"
 
-file-saver@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.2.tgz#06d6e728a9ea2df2cce2f8d9e84dfcdc338ec17a"
-  integrity sha512-Wz3c3XQ5xroCxd1G8b7yL0Ehkf0TC9oYC6buPFkNnU9EnaPlifeAFCyCh+iewXTyFRcg0a6j3J7FmJsIhlhBdw==
-
 file-uri-to-path@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/file-uri-to-path/-/file-uri-to-path-1.0.0.tgz#553a7b8446ff6f684359c445f1e37a05dacc33dd"
@@ -3941,10 +3936,10 @@ obuf@^1.0.0, obuf@^1.1.2:
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
   integrity sha512-PX1wu0AmAdPqOL1mWhqmlOd8kOIZQwGZw6rh7uby9fTc5lhaOWFLX3I6R1hrF9k3zUY40e6igsLGkDXK92LJNg==
 
-odca@>=0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/odca/-/odca-0.0.8.tgz#442c2b09bd7621063bc6ec21322f5ca4dab652af"
-  integrity sha512-Qj3yk+zuCmOxJEekYg2s52nGg2faLs17V3jWtsa7pLe8YLiHL+wgX5nOYmPYb8nRRLeHm5pWOjdGusGy1Q9iRA==
+odca@>=0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/odca/-/odca-0.0.9.tgz#f1402d5684225b201404197951930c2b672f82d3"
+  integrity sha512-LyjOoMjcZ8YfbQw7KYty5b5UJs4/0F5dSeupelN/I4ocJZrO8wxunl8j6hBe/sTePGW/9MBpC9pgHzW+KqCajw==
   dependencies:
     kotlin "^1.3.40"
     link-module-alias "^1.2.0"
@@ -5946,6 +5941,11 @@ webpack-log@^2.0.0:
   dependencies:
     ansi-colors "^3.0.0"
     uuid "^3.3.2"
+
+webpack-node-externals@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/webpack-node-externals/-/webpack-node-externals-1.7.2.tgz#6e1ee79ac67c070402ba700ef033a9b8d52ac4e3"
+  integrity sha512-ajerHZ+BJKeCLviLUUmnyd5B4RavLF76uv3cs6KNuO8W+HuQaEs0y0L7o40NQxdPy5w0pcv8Ew7yPUAQG0UdCg==
 
 webpack-sources@^1.4.0, webpack-sources@^1.4.1, webpack-sources@^1.4.3:
   version "1.4.3"

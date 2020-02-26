@@ -30,5 +30,4 @@ window._ = require('underscore'); // override
 require('@/config/helper_function');
 _.mixin({deepExtend: underscoreDeepExtend(_)});
 
-import('@/assets/js/jquery.noty.packaged');
 require('@/assets/js/validate.min.js');

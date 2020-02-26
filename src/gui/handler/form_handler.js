@@ -1,4 +1,5 @@
 import {FORM_CONSTANTS} from "@/config/constants";
+import DateFormater from "@/date_formater";
 
 const FormHandler = {};
 
@@ -28,38 +29,39 @@ function getControlValue(control, selectorOutside) {
 FormHandler.getValue = function (form) {
     var formData = {};
 
-    const sectionInfo = form.sections[0]
-    if (!sectionInfo.isDynamic) {
-        var controlData = {};
+    form.sections.forEach(sectionInfo => {
+      if (!sectionInfo.isDynamic) {
+          var controlData = {};
 
-        var controls = sectionInfo.row.controls;
+          var controls = sectionInfo.row.controls;
 
-        // retrieve value in control
-        _.each(controls, control => {
-            // special get value
-            controlData[control.fieldName] = getControlValue(control, `#${sectionInfo.name}_gui_body`);
-        });
+          // retrieve value in control
+          _.each(controls, control => {
+              // special get value
+              controlData[control.attrName] = getControlValue(control, `#${sectionInfo.name}_gui_body`);
+          });
 
-        // set data
-        formData[sectionInfo.clientKey] = controlData;
-    } else {
-        var sectionData = [];
-        _.each(sectionInfo.instances, (instance, insIndex) => {
-            var controlData = {};
+          // set data
+          formData[sectionInfo.clientKey] = controlData;
+      } else {
+          var sectionData = [];
+          _.each(sectionInfo.instances, (instance, insIndex) => {
+              var controlData = {};
 
-            var controls = instance.controls;
+              var controls = instance.controls;
 
-            // retrieve value in control
-            _.each(controls, control => {
-                controlData[control.fieldName] = getControlValue(control, `#${sectionInfo.name}_gui_body .rowDynamic_${insIndex}`);
-            });
+              // retrieve value in control
+              _.each(controls, control => {
+                  controlData[control.attrName] = getControlValue(control, `#${sectionInfo.name}_gui_body .rowDynamic_${insIndex}`);
+              });
 
-            // populate data
-            sectionData.push(controlData);
-        });
+              // populate data
+              sectionData.push(controlData);
+          });
 
-        formData[sectionInfo.clientKey] = sectionData;
-    }
+          formData[sectionInfo.clientKey] = sectionData;
+      }
+    })
 
     return formData;
 };

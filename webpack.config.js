@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+var nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   mode: 'production',
@@ -59,5 +60,6 @@ module.exports = {
         "window.$": "jquery"
     }),
     new VueLoaderPlugin()
-  ]
+  ],
+  externals: [nodeExternals()]
 };
