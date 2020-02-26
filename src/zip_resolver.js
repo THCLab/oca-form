@@ -1,11 +1,6 @@
 import JSZip from 'jszip'
-import { saveAs } from 'file-saver'
-import * as odcaPkg from 'odca'
-const odca = odcaPkg.com.thehumancolossuslab.odca
 
-export const exportToZip = (schemaOdca) => {
-    const facade = new odca.Facade()
-    const schema = JSON.parse(facade.serialize(schemaOdca))
+export const exportToZip = async (schema) => {
     const zip = new JSZip()
     const schemaName = schema.schemaBase.name
 
@@ -24,11 +19,7 @@ export const exportToZip = (schemaOdca) => {
         }
     }
 
-    zip.generateAsync({type:"blob"}).then((content) => {
-        const filename = Math.random().toString(16).substring(2) +
-          Math.random().toString(16).substring(2) +
-          Math.random().toString(16).substring(9)
-
+    return await zip.generateAsync({type:"blob"}).then((content) => {
         if (window.Cypress) {
             const fr = new FileReader()
             fr.addEventListener('load', () => {
@@ -40,7 +31,7 @@ export const exportToZip = (schemaOdca) => {
             return
         }
 
-        saveAs(content, `${filename}.zip`);
+      return content
     });
 }
 

@@ -58,5 +58,9 @@ export const createSchemaFromForm = (baseForm, form) => {
       })
     })
 
-    return facade.renderSchema(baseInfo, attributes)
+  return JSON.parse(
+    facade.serialize(
+      facade.renderSchema(baseInfo, attributes)
+    )
+  )
 }
