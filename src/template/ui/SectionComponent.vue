@@ -14,9 +14,38 @@
                     <font-awesome-icon icon="file-download"/>
                     Export
                 </button>
+                <button class="btn btn-default" id='publishFormBtn' @click="showPublishForm = !showPublishForm">
+                    <font-awesome-icon icon="globe"/>
+                    Publish
+                </button>
             </div>
         </div>
 
+        <div v-show="showPublishForm" class="publishForm row">
+            <label class="col-form-label col-md-1" for="publishHost">To: </label>
+            <div class="col-md-4 text-left">
+                <input type="text"
+                class="form-control form-control-sm"
+                id="publishHost"
+                ref="publishHost"
+                placeholder="Host"
+                v-model="publishForm.host" />
+            </div>
+
+            <label class="col-form-label col-md-1" for="publishNamespace">As: </label>
+            <div class="col-md-3 text-left">
+                <input type="text"
+                  class="form-control form-control-sm"
+                  id="publishNamespace"
+                  ref="publishNamespace"
+                  placeholder="Namespace"
+                  v-model="publishForm.namespace" />
+            </div>
+
+            <div class="col-md-3 text-left">
+                <button class="btn btn-sm btn-success btn-block" @click="publish">Send</button>
+            </div>
+        </div>
 
         <div id="sectionWrapper">
           <div class="col-xs-12 mt-2 sectionItem" v-for="(section, i) in form.sections" :key="section.name" :id="section.name">
@@ -57,6 +86,10 @@
                 type: Object
             }
         },
+        data: () => ({
+            showPublishForm: false,
+            publishForm: { host: '', namespace: '' }
+        }),
         methods: {
             addSection() {
                 const sectionInfo = _.cloneDeep(FORM_CONSTANTS.Section)
@@ -116,6 +149,21 @@
             },
             download() {
                 this.$parent.download();
+            },
+            publish() {
+                let isError = false
+                if(this.publishForm.host.length == 0) {
+                    isError = true
+                    this.$refs.publishHost.classList.add('hasError')
+                }
+                if(this.publishForm.namespace.length == 0) {
+                    isError = true
+                    this.$refs.publishNamespace.classList.add('hasError')
+                }
+
+                if(!isError) {
+                  this.$parent.publish(this.publishForm);
+                }
             }
         }
     }
@@ -139,6 +187,14 @@
     .accordion .fa-chevron-up {
         display: inline-block;
     }
+
+    .publishForm {
+      padding: 20px 0;
+    }
+    .publishForm .hasError {
+        border-color: darkred;
+    }
+
     .ui-state-highlight {
         height: 2.5em;
         line-height: 1.2em;
