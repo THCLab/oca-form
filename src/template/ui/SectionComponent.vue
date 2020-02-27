@@ -152,13 +152,18 @@
             },
             publish() {
                 let isError = false
-                if(this.publishForm.host.length == 0) {
+                if(!this.publishForm.host || this.publishForm.host.length == 0) {
                     isError = true
                     this.$refs.publishHost.classList.add('hasError')
+                } else {
+                    this.$refs.publishHost.classList.remove('hasError')
                 }
+
                 if(this.publishForm.namespace.length == 0) {
                     isError = true
                     this.$refs.publishNamespace.classList.add('hasError')
+                } else {
+                    this.$refs.publishNamespace.classList.remove('hasError')
                 }
 
                 if(!isError) {
