@@ -6,6 +6,8 @@ var EventHandlerConstant = {
     EXPORT_FORM: 'export_form',
     PUBLISH_FORM: 'publish_form',
     SAVE_PREVIEW: 'save_preview',
+    GENERATE_HASHLINK: 'generate_hashlink',
+    HASHLINK_GENERATED: 'hashlink_generated',
     ERROR: 'error_occurred',
     // sidebar
     ACTIVATE_EDITOR_SIDEBAR: 'activate_editor_sidebar',
