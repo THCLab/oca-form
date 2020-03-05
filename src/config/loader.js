@@ -1,5 +1,5 @@
 import 'core-js';
-import "core-js/modules/es6.function.name";
+import 'core-js/modules/es.function.name';
 import underscoreDeepExtend from 'underscore-deep-extend';
 import moment from 'moment';
 import {FontAwesomeRegister} from "@/config/font-awesome-register";
