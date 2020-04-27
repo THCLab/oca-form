@@ -59,6 +59,7 @@
         }),
         methods: {
             openModal(formData, formInput = null) {
+              /*
                 if(this.alternatives) {
                   const formDataEn = this.alternatives.find(alt => alt.language = "en_US")
                   if(formDataEn) {
@@ -69,6 +70,7 @@
                     this.selectedLang = this.alternatives[0].language
                   }
                 }
+                */
                 this.formInput = formInput
                 this.formSaved = false
                 // set data
@@ -165,6 +167,7 @@
             },
             closeModal() {
                 this.alternatives = []
+                this.selectedLang = null
                 this.previewModal.modal('hide');
                 this.formSaved = null
                 this.savedData = null
