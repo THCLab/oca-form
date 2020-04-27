@@ -6,6 +6,13 @@
                 <!-- Modal Header -->
                 <div class="modal-header">
                     <h4 class="modal-title">{{ label }}</h4>
+                    <div class="col-md-1" />
+                    <select
+                      class="form-control col-md-3"
+                      v-model="selectedLang"
+                      @change="changeOcaForm">
+                      <option v-for="alt in alternatives">{{alt.language}}</option>
+                    </select>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -20,62 +27,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
 
-                <div class="generateHashlinkForm" v-if="!formReadonly" v-show="formSaved">
-                    <div class="row">
-                        <label class="col-form-label col-md-4" for="fileserver">
-                          File server with responses:
-                        </label>
-                        <div class="col-md-4">
-                            <input type="text"
-                              class="form-control form-control-sm"
-                              ref="fileserver"
-                              id="fileserver"
-                              placeholder="File server host"
-                              v-model="hashlinkInfo.fileserver"
-                              />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <label class="col-form-label col-md-4" for="ocaRepoHost">
-                            OCA Repository:
-                        </label>
-                        <div class="col-md-4">
-                            <input type="text"
-                              class="form-control form-control-sm"
-                              ref="ocaRepoHost"
-                              id="ocaRepoHost"
-                              placeholder="Host"
-                              v-model="hashlinkInfo.ocaRepo.host"
-                              />
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text"
-                              class="form-control form-control-sm"
-                              ref="ocaRepoNamespace"
-                              id="ocaRepoNamespace"
-                              placeholder="Namespace"
-                              v-model="hashlinkInfo.ocaRepo.namespace"
-                              />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3">
-                        </div>
-                        <div class="col-md-6">
-                            <button type="button" class="btn btn-sm btn-block btn-success" @click="generateHashlink">Generate Hashlink</button>
-                        </div>
-                        <div class="col-md-3">
-                        </div>
-                    </div>
-                    <div class="row generatedHashlink" v-show="generatedHashlink">
-                        <div class="col-md-12">
-                            <pre>{{ generatedHashlink }}</pre>
-                        </div>
-                        <div class="col-md-12 text-left">
-                            <pre>{{ generatedHashlinkMeta }}</pre>
-                        </div>
-                    </div>
-                </div>
+                <slot name="afterSave" v-if="!formReadonly && formSaved" />
             </div>
         </div>
     </div>
@@ -88,10 +40,12 @@
     export default {
         name: "PreviewComponent",
         components: {FormBuilderGui},
-        props: ['form', 'readonly'],
+        props: ['form', 'alternatives', 'readonly'],
         data: () => ({
             previewModal: null,
+            selectedLang: null,
             formData: null,
+            formInput: null,
             formReadonly: null,
             formSaved: null,
             savedData: null,
@@ -105,6 +59,17 @@
         }),
         methods: {
             openModal(formData, formInput = null) {
+                if(this.alternatives) {
+                  const formDataEn = this.alternatives.find(alt => alt.language = "en_US")
+                  if(formDataEn) {
+                    let formData = formDataEn.form
+                    this.selectedLang = formDataEn.language
+                  } else {
+                    let formData = this.alternatives[0].form
+                    this.selectedLang = this.alternatives[0].language
+                  }
+                }
+                this.formInput = formInput
                 this.formSaved = false
                 // set data
                 this.formData = _.cloneDeep(formData);
@@ -127,10 +92,29 @@
                 // open
                 this.previewModal.modal('show');
             },
+            changeOcaForm() {
+                this.formData = _.cloneDeep(
+                  this.alternatives
+                    .find(alt => alt.language == this.selectedLang).form
+                )
+                if(this.formInput) {
+                    this.fillForm(this.formInput)
+                    if(this.formReadonly == null) {
+                        this.formReadonly = true
+                    }
+                }
+                if(this.formReadonly) {
+                    this.formData.sections.forEach( section => {
+                        section.row.controls.forEach(control => {
+                            control.readonly = true
+                        })
+                    })
+                }
+            },
             fillForm(input) {
                 this.formData.sections.forEach(section => {
                     section.row.controls.forEach(control => {
-                        if(!input[control.attrName]) {
+                        if(input[control.attrName] == null) {
                             eventBus.$emit(EventHandlerConstant.ERROR, "Invalid data")
                             throw "Invalid data"
                         }
@@ -180,6 +164,7 @@
                 }
             },
             closeModal() {
+                this.alternatives = []
                 this.previewModal.modal('hide');
                 this.formSaved = null
                 this.savedData = null
@@ -205,16 +190,16 @@
 
 <style scoped>
 
-  .generateHashlinkForm {
+  .afterSave {
     border-top: 1px solid #dee2e6;
     padding: 20px 5px;
   }
 
-  .generateHashlinkForm .row {
+  .afterSave .row {
     padding: 5px 0;
   }
 
-  .generateHashlinkForm .hasError {
+  .afterSave .hasError {
     border-color: darkred;
   }
 
