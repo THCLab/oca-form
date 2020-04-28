@@ -59,18 +59,7 @@
         }),
         methods: {
             openModal(formData, formInput = null) {
-              /*
-                if(this.alternatives) {
-                  const formDataEn = this.alternatives.find(alt => alt.language = "en_US")
-                  if(formDataEn) {
-                    let formData = formDataEn.form
-                    this.selectedLang = formDataEn.language
-                  } else {
-                    let formData = this.alternatives[0].form
-                    this.selectedLang = this.alternatives[0].language
-                  }
-                }
-                */
+                this.selectedLang = this.alternatives[0].language
                 this.formInput = formInput
                 this.formSaved = false
                 // set data
