@@ -59,7 +59,9 @@
         }),
         methods: {
             openModal(formData, formInput = null) {
-                this.selectedLang = this.alternatives[0].language
+                if(this.alternatives) {
+                  this.selectedLang = this.alternatives[0].language
+                }
                 this.formInput = formInput
                 this.formSaved = false
                 // set data
