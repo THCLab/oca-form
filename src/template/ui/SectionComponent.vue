@@ -114,6 +114,7 @@
         }),
         mounted() {
           this.lang.current = this.lang.selected[0]
+          this.$nextTick(() => this.addTranslation(this.lang.current))
         },
         watch: {
           'lang.current': {
@@ -122,9 +123,14 @@
             }
           },
           'lang.selected': {
-            handler() {
+            handler(val, oldVal) {
               if(!this.lang.selected.includes(this.lang.current)) {
                 this.lang.current = this.lang.selected[0]
+              }
+
+              if(val.length > oldVal.length) {
+                const lang = val.filter(lang => !oldVal.includes(lang))[0]
+                this.addTranslation(lang)
               }
             }
           }
@@ -182,6 +188,31 @@
 
                 // reset the current sections
                 this.form.sections = finalItems;
+            },
+            addTranslation(lang) {
+              const isLangEn = lang == "en_US"
+              const translation = {
+                language: lang,
+                data: {
+                  sections: this.form.sections.map((section, i) => {
+                    return { id: i, label: isLangEn ? section.label : "" }
+                  }),
+                  controls: this.form.sections.map(section => {
+                    return section.row.controls.map(control => {
+                      return {
+                        fieldName: control.fieldName,
+                        label: isLangEn ? control.label : "",
+                        defaultValue: isLangEn ? control.defaultValue : "",
+                        information: isLangEn ? control.information : "",
+                        dataOptions: control.dataOptions.map(op => (
+                          { id: op.id, text: isLangEn ? op.text : "" }
+                        ))
+                      }
+                    })
+                  }).flatten()
+                }
+              }
+              this.form.translations.push(translation)
             },
             preview() {
                 this.$parent.preview();

@@ -44,7 +44,8 @@
             form: {
                 type: Object,
                 default:() => ({
-                    sections: [_.cloneDeep(FORM_CONSTANTS.Section)]
+                    sections: [_.cloneDeep(FORM_CONSTANTS.Section)],
+                    translations: []
                 })
             },
             value: null,
