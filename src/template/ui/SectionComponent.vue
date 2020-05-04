@@ -1,7 +1,22 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-12 text-right">
+            <div class="col-md-6 text-left">
+              <div class="row">
+                <div class="col-md-3">
+                  <select class="form-control" v-model="lang.current">
+                    <option v-for="lang in lang.selected" :key="lang">
+                      {{ lang }}
+                    </option>
+                  </select>
+                </div>
+                <select2-multiple-control class="col-md-9"
+                                          v-model="lang.selected"
+                                          :options="lang.all">
+                </select2-multiple-control>
+              </div>
+            </div>
+            <div class="col-md-6 text-right">
                 <button class="btn btn-default" @click="addSection">
                     <font-awesome-icon icon="plus"/>
                     Add category
@@ -78,8 +93,10 @@
     import {Hooks} from '@/template/components/hook_lists';
     import {eventBus, EventHandlerConstant} from '@/template/handler/event_handler';
 
+    import Select2MultipleControl from "@/third_party_controls/Select2MultipleControl";
+
     export default {
-        components: {RowComponent, FontAwesomeIcon},
+        components: {RowComponent, FontAwesomeIcon, Select2MultipleControl},
         name: "section-component",
         props: {
             form: {
@@ -88,8 +105,30 @@
         },
         data: () => ({
             showPublishForm: false,
-            publishForm: { host: '', namespace: '' }
+            publishForm: { host: '', namespace: '' },
+            lang: {
+              all: ['en_US', 'fr_FR', 'pl_PL', 'es_ES'],
+              selected: ['en_US'],
+              current: null
+            }
         }),
+        mounted() {
+          this.lang.current = this.lang.selected[0]
+        },
+        watch: {
+          'lang.current': {
+            handler() {
+              this.$parent.language = this.lang.current
+            }
+          },
+          'lang.selected': {
+            handler() {
+              if(!this.lang.selected.includes(this.lang.current)) {
+                this.lang.current = this.lang.selected[0]
+              }
+            }
+          }
+        },
         methods: {
             addSection() {
                 const sectionInfo = _.cloneDeep(FORM_CONSTANTS.Section)

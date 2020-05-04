@@ -37,6 +37,9 @@
                 type: Object
             }
         },
+        data: () => ({
+          language: null
+        }),
         methods: {
             getValue() {
                 return this.form;
