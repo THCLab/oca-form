@@ -75,6 +75,13 @@
                 this.dataSource = this.control.dataOptions;
             }
         },
+        watch: {
+            'control.dataOptions': {
+                handler() {
+                    this.dataSource = this.control.dataOptions;
+                }
+            }
+        },
         mounted() {
             if (!_.isEmpty(this.control.defaultValue)) {
                 if (this.control.isMultiple) {

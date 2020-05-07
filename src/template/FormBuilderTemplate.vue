@@ -10,7 +10,7 @@
             <sidebar-component></sidebar-component>
         </div>
 
-        <preview-component ref="PreviewComponent" :form="form"></preview-component>
+        <preview-component ref="PreviewComponent" :alternatives="alternatives" :form="form"></preview-component>
     </div>
 </template>
 
@@ -43,7 +43,8 @@
             }
         },
         data: () => ({
-          language: null
+          language: null,
+          alternatives: {}
         }),
         methods: {
             getValue() {

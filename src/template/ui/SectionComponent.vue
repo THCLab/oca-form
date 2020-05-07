@@ -176,6 +176,28 @@
                 this.form.sections = finalItems;
             },
             preview() {
+                this.$parent.alternatives = this.form.translations.map(translation => {
+                  const form = _.cloneDeep(this.form)
+                  form.sections.forEach((section, index) => {
+                    section.label = translation.data.sections[index].label
+
+                    section.row.controls.forEach(control => {
+                      const translationControl = translation.data.controls
+                        .find(c => c.fieldName == control.fieldName)
+                      control.label = translationControl.label
+                      control.defaultValue = translationControl.defaultValue
+                      control.information = translationControl.information
+                      if(control.dataOptions) {
+                        control.dataOptions.forEach(op => {
+                          const translationOp = translationControl.dataOptions.find(tOp => tOp.id == op.id)
+                          op.text = translationOp ? translationOp.text : ""
+                        })
+                      }
+                    })
+                  })
+
+                  return { language: translation.language, form: form }
+                })
                 this.$parent.preview();
             },
             download() {
