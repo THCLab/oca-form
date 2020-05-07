@@ -129,6 +129,31 @@
                       this.controlInfo = null;
                   }
             });
+
+            eventBus.$on(EventHandlerConstant.ON_LANGUAGE_CHANGE, ({ defaultTranslation, translation }) => {
+                if(!this.isConfig) { return }
+                if(defaultTranslation) {
+                    const translationDefControl = defaultTranslation.controls
+                      .find(c => c.fieldName == this.controlInfo.fieldName)
+                    this.controlInfo.labelPlaceholder = translationDefControl.label
+                    this.controlInfo.defaultValuePlaceholder = translationDefControl.defaultValue
+                    this.controlInfo.informationPlaceholder = translationDefControl.information
+                    this.controlInfo.dataOptions.forEach(op => {
+                      const translationOp = translationDefControl.dataOptions.find(tOp => tOp.id == op.id)
+                      op.placeholder = translationOp ? translationOp.text : ""
+                    })
+                }
+
+                const translationControl = translation.controls
+                  .find(c => c.fieldName == this.controlInfo.fieldName)
+                this.controlInfo.label = translationControl.label
+                this.controlInfo.defaultValue = translationControl.defaultValue
+                this.controlInfo.information = translationControl.information
+                this.controlInfo.dataOptions.forEach(op => {
+                  const translationOp = translationControl.dataOptions.find(tOp => tOp.id == op.id)
+                  op.text = translationOp ? translationOp.text : ""
+                })
+            })
         },
         mounted() {
             // insert controls

@@ -96,6 +96,11 @@
                 })
                 this.row.controls.push(controlInfo);
 
+                eventBus.$emit(
+                  EventHandlerConstant.ADD_CONTROL,
+                  { schemaUuid: this.formUuid, controlInfo }
+                )
+
                 // after hook
                 Hooks.Control.afterAdd.run(controlInfo, this.row);
             },

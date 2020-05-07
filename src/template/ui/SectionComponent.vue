@@ -1,21 +1,7 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-6 text-left">
-              <div class="row">
-                <div class="col-md-3">
-                  <select class="form-control" v-model="lang.current">
-                    <option v-for="lang in lang.selected" :key="lang">
-                      {{ lang }}
-                    </option>
-                  </select>
-                </div>
-                <select2-multiple-control class="col-md-9"
-                                          v-model="lang.selected"
-                                          :options="lang.all">
-                </select2-multiple-control>
-              </div>
-            </div>
+            <div class="col-md-6 text-left"></div>
             <div class="col-md-6 text-right">
                 <button class="btn btn-default" @click="addSection">
                     <font-awesome-icon icon="plus"/>
@@ -68,7 +54,7 @@
                   <div class="card-header">
                     <div class="row">
                       <div class="col-md-8">
-                        <input type="text" class="form-control" placeholder="Category name" v-model="section.label">
+                        <input type="text" class="form-control" :placeholder="section.labelPlaceholder" v-model="section.label">
                       </div>
                       <div class="col-md-4 text-right">
                         <span class="fa-2x clickable" @click="removeSection(i)"><font-awesome-icon icon="times"/></span>
@@ -105,34 +91,25 @@
         },
         data: () => ({
             showPublishForm: false,
-            publishForm: { host: '', namespace: '' },
-            lang: {
-              all: ['en_US', 'fr_FR', 'pl_PL', 'es_ES'],
-              selected: ['en_US'],
-              current: null
-            }
+            publishForm: { host: '', namespace: '' }
         }),
-        mounted() {
-          this.lang.current = this.lang.selected[0]
-          this.$nextTick(() => this.addTranslation(this.lang.current))
-        },
         watch: {
-          'lang.current': {
-            handler() {
-              this.$parent.language = this.lang.current
-            }
-          },
-          'lang.selected': {
-            handler(val, oldVal) {
-              if(!this.lang.selected.includes(this.lang.current)) {
-                this.lang.current = this.lang.selected[0]
-              }
+          'sectionsLabel': {
+            handler(val) {
+              const translation = this.form.translations.find(t => t.language == this.$parent.language)
+              if(!translation) { return }
 
-              if(val.length > oldVal.length) {
-                const lang = val.filter(lang => !oldVal.includes(lang))[0]
-                this.addTranslation(lang)
-              }
-            }
+              val.forEach((label, index) => {
+                const translationSection = translation.data.sections.find(tS => tS.id == index)
+                translationSection.label = label
+              })
+            },
+            deep: true
+          }
+        },
+        computed: {
+          sectionsLabel() {
+            return this.form.sections.map(s => s.label)
           }
         },
         methods: {
@@ -148,6 +125,12 @@
                 }
 
                 this.form.sections.push(sectionInfo)
+                this.form.translations.forEach(t => {
+                  t.data.sections.push({
+                    id: this.form.sections.length - 1,
+                    label: sectionInfo.label
+                  })
+                })
 
                 // after hook
                 Hooks.Section.afterAdd.run(sectionInfo)
@@ -168,6 +151,9 @@
                 }
 
                 this.form.sections.splice(index, 1);
+                this.form.translations.forEach(t => {
+                  t.data.sections.splice(index, 1)
+                })
 
                 Hooks.Section.afterRemove.run(sectionInfo);
             },
@@ -188,31 +174,6 @@
 
                 // reset the current sections
                 this.form.sections = finalItems;
-            },
-            addTranslation(lang) {
-              const isLangEn = lang == "en_US"
-              const translation = {
-                language: lang,
-                data: {
-                  sections: this.form.sections.map((section, i) => {
-                    return { id: i, label: isLangEn ? section.label : "" }
-                  }),
-                  controls: this.form.sections.map(section => {
-                    return section.row.controls.map(control => {
-                      return {
-                        fieldName: control.fieldName,
-                        label: isLangEn ? control.label : "",
-                        defaultValue: isLangEn ? control.defaultValue : "",
-                        information: isLangEn ? control.information : "",
-                        dataOptions: control.dataOptions.map(op => (
-                          { id: op.id, text: isLangEn ? op.text : "" }
-                        ))
-                      }
-                    })
-                  }).flatten()
-                }
-              }
-              this.form.translations.push(translation)
             },
             preview() {
                 this.$parent.preview();
