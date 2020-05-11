@@ -171,6 +171,9 @@
           },
           'lang.selected': {
             handler(val, oldVal) {
+              if(val.length <= 0) {
+                this.lang.selected = _.cloneDeep(oldVal)
+              }
               if(!this.lang.selected.includes(this.lang.current)) {
                 this.lang.current = this.lang.selected[0]
               }
