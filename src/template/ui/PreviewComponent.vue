@@ -118,9 +118,26 @@
                 })
             },
             saveForm() {
+                const isValid = this.validateValues()
+                if(!isValid) { return }
                 this.savedData = Object.assign({}, ...Object.values(this.getData()))
                 eventBus.$emit(EventHandlerConstant.SAVE_PREVIEW, this.savedData)
                 this.formSaved = true
+            },
+            validateValues() {
+                let isSuccess = true
+                const controls = this.formData.sections.map(section => {
+                    return section.row.controls
+                }).flatten()
+                controls.forEach(control => {
+                    control.errors = []
+                    if(control.required && control.value.length <= 0) {
+                        control.errors.push('must be filled')
+                    }
+
+                  if(control.errors.length > 0) { isSuccess = false }
+                })
+                return isSuccess
             },
             generateHashlink() {
                 let isError = false

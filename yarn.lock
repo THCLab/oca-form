@@ -202,6 +202,11 @@
     consola "^2.10.1"
     node-fetch "^2.6.0"
 
+"@ttskch/select2-bootstrap4-theme@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@ttskch/select2-bootstrap4-theme/-/select2-bootstrap4-theme-1.4.0.tgz#1e15ed14c5adbd6f86940811e195bde984aa9882"
+  integrity sha512-5WVMdFpQLx0vKxX0/LfapI0aE+qUYOuOuMjOc+ecN8vsr7plcBsgIbp4YtlpLmQR9aqgyM1QyqEiO/FwB+qaqQ==
+
 "@types/events@*":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"

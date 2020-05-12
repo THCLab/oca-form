@@ -5,13 +5,14 @@
 
             <div class="col-md-8">
                 <div class="input-group">
-                    <ControlDatePicker v-model="control.value" :readonly="this.control.readonly" :options="options" />
+                    <ControlDatePicker v-model="control.value" :isValid="isValid" :readonly="this.control.readonly" :options="options" />
 
                     <div class="input-group-append">
                     <span class="input-group-text">
                         <font-awesome-icon :icon="icon"></font-awesome-icon>
                     </span>
                     </div>
+                    <slot name="errors"/>
                 </div>
             </div>
 
@@ -22,7 +23,7 @@
             <span v-show="control.required"> *</span>
 
             <div class="input-group">
-                <ControlDatePicker v-model="control.value" :readonly="this.control.readonly" :options="options" />
+                <ControlDatePicker v-model="control.value" :isValid="isValid" :readonly="this.control.readonly" :options="options" />
 
                 <div class="input-group-append">
                     <span class="input-group-text">
@@ -44,7 +45,7 @@
     export default {
         name: "DatePickerControl",
         components: {FontAwesomeIcon, ControlDatePicker},
-        props:['control', 'labelPosition'],
+        props:['control', 'isValid', 'labelPosition'],
         data: () => ({
             icon: null,
             options: {

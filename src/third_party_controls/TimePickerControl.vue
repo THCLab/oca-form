@@ -1,6 +1,7 @@
 <template>
     <input type="text"
            class="form-control"
+           :class="{ 'is-invalid': !isValid }"
            :disabled="readonly" />
 </template>
 
@@ -22,6 +23,10 @@
             options: {
                 type: Object,
                 default: () => {}
+            },
+            isValid: {
+                type: Boolean,
+                default: true
             },
             value: null
         },

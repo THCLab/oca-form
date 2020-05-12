@@ -5,13 +5,14 @@
 
             <div class="col-md-8">
                 <div class="input-group">
-                    <ControlTimePicker v-model="control.value" :readonly="control.readonly" :options="options" />
+                    <ControlTimePicker v-model="control.value" :isValid="isValid" :readonly="control.readonly" :options="options" />
 
                     <div class="input-group-append">
                     <span class="input-group-text">
                         <font-awesome-icon :icon="icon"></font-awesome-icon>
                     </span>
                     </div>
+                    <slot name="errors"/>
                 </div>
             </div>
 
@@ -43,7 +44,7 @@
     export default {
         name: "TimePickerControl",
         components: {FontAwesomeIcon, ControlTimePicker},
-        props:['control', 'labelPosition'],
+        props:['control', 'isValid', 'labelPosition'],
         data: () => ({
             icon: null,
             options: {

@@ -1,6 +1,7 @@
 <template>
     <div>
-        <select class="form-control" :placeholder="placeholder" :disabled="disabled" style="width: 100%"></select>
+        <select class="form-control select2-hidden-accessible" :class="{ 'is-invalid': !isValid }" :placeholder="placeholder" :disabled="disabled" style="width: 100%"></select>
+        <slot name="errors"/>
     </div>
 </template>
 
@@ -8,6 +9,7 @@
     import $ from 'jquery';
     import 'select2';
     import 'select2/dist/css/select2.min.css'
+    import '@ttskch/select2-bootstrap4-theme/dist/select2-bootstrap4.min.css'
 
     export default {
         name: 'Select2Control',
@@ -36,6 +38,10 @@
             settings: {
                 type: Object,
                 default: () => {}
+            },
+            isValid: {
+                type: Boolean,
+                default: true
             },
             value: null
         },
@@ -70,6 +76,7 @@
                 .find('select')
                 .select2({
                     ...this.settings,
+                    theme: 'bootstrap4',
                     data: this.options
                 })
                 .on('select2:select select2:unselect', ev => {

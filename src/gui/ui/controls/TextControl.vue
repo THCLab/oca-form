@@ -11,9 +11,11 @@
                 <input v-else
                        type="text"
                        class="form-control"
+                       :class="{ 'is-invalid': !isValid }"
                        :readonly="this.control.readonly"
                        :name="control.fieldName"
                        v-model="control.value" />
+                <slot name="errors"/>
             </div>
 
             <slot name="information"/>
@@ -36,7 +38,7 @@
 
     export default {
         name: "TextControl",
-        props: ['control', 'labelPosition'],
+        props: ['control', 'isValid', 'labelPosition'],
         mounted() {
             if (!_.isEmpty(this.control.defaultValue)) {
                 this.control.value = this.control.defaultValue;
