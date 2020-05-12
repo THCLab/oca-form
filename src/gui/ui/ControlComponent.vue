@@ -3,7 +3,7 @@
         <component :is="controlInstance" :control="control" :isValid="isValid" :label-position="labelPosition">
             <template v-slot:label>
                 <div class="col-md-4">
-                    <label> {{ control.label }} </label>
+                    <label :class="{ pii: control.isPII }"> {{ control.label }} </label>
                     <span v-show="control.required">*</span>
                 </div>
             </template>
@@ -67,5 +67,9 @@
       text-align: justify;
       font-style: italic;
       color: #6a6a6a;
+    }
+
+    .pii {
+      font-weight: 600;
     }
 </style>
