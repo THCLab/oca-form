@@ -92,12 +92,9 @@
                   this.alternatives
                     .find(alt => alt.language == this.selectedLang).form
                 )
-                if(this.formInput) {
-                    this.fillForm(this.formInput)
-                    if(this.formReadonly == null) {
-                        this.formReadonly = true
-                    }
-                }
+                this.fillForm(
+                  Object.assign({}, ...Object.values(this.getData()))
+                )
                 if(this.formReadonly) {
                     this.formData.sections.forEach( section => {
                         section.row.controls.forEach(control => {
