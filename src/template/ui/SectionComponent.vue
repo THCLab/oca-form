@@ -179,7 +179,8 @@
                 this.$parent.alternatives = this.form.translations.map(translation => {
                   const form = _.cloneDeep(this.form)
                   form.sections.forEach((section, index) => {
-                    section.label = translation.data.sections[index].label
+                    const translationSection = translation.data.sections[index]
+                    section.label = translationSection ? translationSection.label : ''
 
                     section.row.controls.forEach(control => {
                       const translationControl = translation.data.controls

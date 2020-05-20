@@ -61,7 +61,8 @@ export const createSchemaFromForm = (baseForm, form) => {
               }
             }
 
-            const category = translation.data.sections[sectionIndex].label
+            const translationSection = translation.data.sections[sectionIndex]
+            const category = translationSection ? translationSection.label : ''
             const categories = [category]
 
             translationFields.put_xwzc9p$("categories", categories)
