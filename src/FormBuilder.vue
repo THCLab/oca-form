@@ -1,6 +1,8 @@
 <template>
     <div>
-        <form-builder-template v-if="type === 'template'" ref="FormBuilderTemplate" :form="form"></form-builder-template>
+        <form-builder-template v-if="type === 'template'" ref="FormBuilderTemplate" :form="form">
+          <template #afterSidebar><slot name="afterSidebar"/></template>
+        </form-builder-template>
         <form-builder-gui v-else-if="type === 'gui'" ref="FormBuilderGui" :form="form"></form-builder-gui>
         <div v-else>
             <p>Type not found, did you enter correct type <b>(template, gui)</b>?</p>
