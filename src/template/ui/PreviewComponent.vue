@@ -173,7 +173,6 @@
                 }
             },
             closeModal() {
-                this.alternatives = []
                 this.selectedLang = null
                 this.previewModal.modal('hide');
                 this.formSaved = null
@@ -194,11 +193,26 @@
               this.generatedHashlink = hashlink
               this.generatedHashlinkMeta = meta
             })
+            $(".modal").on('hidden.bs.modal', () => {
+              this.closeModal()
+            });
         }
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  .modal {
+    &__left {
+      width: 50vw;
+      padding: 30px;
+    }
+
+    &__right {
+      width: 50vw;
+      margin-left: 50vw;
+      padding: 30px;
+    }
+  }
 
   .afterSave {
     border-top: 1px solid #dee2e6;
