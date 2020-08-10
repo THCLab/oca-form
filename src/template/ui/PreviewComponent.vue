@@ -1,60 +1,40 @@
 <template>
-    <div class="modal" id="previewModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+    <dialog-component ref='DialogModal' size='lg' id="previewModal" :readonly="readonly" :headerLabel="label" confirmLabel="Save">
+        <template v-slot:header>
+            <select
+              class="form-control col-md-3"
+              v-model="selectedLang">
+              <option v-for="alt in alternatives">{{alt.language}}</option>
+            </select>
+        </template>
 
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">{{ label }}</h4>
-                    <div class="col-md-1" />
-                    <select
-                      class="form-control col-md-3"
-                      v-model="selectedLang"
-                      @change="changeOcaForm">
-                      <option v-for="alt in alternatives">{{alt.language}}</option>
-                    </select>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body" v-if="formData !== null">
-                    <form-builder-gui ref="FormBuilderGui" :form="formData" :key="formData._uniqueId"></form-builder-gui>
-                </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" v-if="!formReadonly" @click="saveForm">Save</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-
-                <slot name="afterSave" v-if="!formReadonly && formSaved" />
-            </div>
-        </div>
-    </div>
+        <template v-slot:body>
+            <form-builder-gui ref="FormBuilderGui"
+              :selected-lang="selectedLang"
+              :form="formData"
+              :alternatives="alternatives"
+              :readonly="readonly"
+              :key="formData._uniqueId"></form-builder-gui>
+        </template>
+    </dialog-component>
 </template>
 
 <script>
+    import DialogComponent from './DialogComponent';
     import FormBuilderGui from '@/gui/FormBuilderGui';
     import { EventHandlerConstant, eventBus } from '@/template/handler/event_handler'
 
     export default {
         name: "PreviewComponent",
-        components: {FormBuilderGui},
+        components: { FormBuilderGui, DialogComponent },
         props: ['form', 'alternatives', 'readonly'],
         data: () => ({
-            previewModal: null,
+            dialogModal: null,
             selectedLang: null,
-            formData: null,
+            formData: {},
             formInput: null,
             formReadonly: null,
-            formSaved: null,
             savedData: null,
-            hashlinkInfo: {
-              fileserver: '',
-              ocaRepo: { host: '', namespace: '' }
-            },
-            generatedHashlink: null,
-            generatedHashlinkMeta: null,
             label: ''
         }),
         methods: {
@@ -65,7 +45,6 @@
                   this.selectedLang = this.alternatives[0].language
                 }
                 this.formInput = formInput
-                this.formSaved = false
                 // set data
                 this.formData = _.cloneDeep(formData);
                 this.formData._uniqueId = Math.random();
@@ -85,23 +64,7 @@
                 }
 
                 // open
-                this.previewModal.modal('show');
-            },
-            changeOcaForm() {
-                this.formData = _.cloneDeep(
-                  this.alternatives
-                    .find(alt => alt.language == this.selectedLang).form
-                )
-                this.fillForm(
-                  Object.assign({}, ...Object.values(this.getData()))
-                )
-                if(this.formReadonly) {
-                    this.formData.sections.forEach( section => {
-                        section.row.controls.forEach(control => {
-                            control.readonly = true
-                        })
-                    })
-                }
+                this.dialogModal.openModal()
             },
             fillForm(input) {
                 this.formData.sections.forEach(section => {
@@ -115,87 +78,19 @@
                 })
             },
             saveForm() {
-                const isValid = this.validateValues()
+                const formRef = this.$refs.FormBuilderGui
+                const isValid = formRef.validateValues()
                 if(!isValid) { return }
-                this.savedData = Object.assign({}, ...Object.values(this.getData()))
+                this.savedData = Object.assign({}, ...Object.values(formRef.getValue()))
                 eventBus.$emit(EventHandlerConstant.SAVE_PREVIEW, this.savedData)
-                this.formSaved = true
-            },
-            validateValues() {
-                let isSuccess = true
-                const controls = this.formData.sections.map(section => {
-                    return section.row.controls
-                }).flatten()
-                controls.forEach(control => {
-                    control.errors = []
-                    if(control.required && control.value.length <= 0) {
-                        control.errors.push('must be filled')
-                    }
-
-                  if(control.errors.length > 0) { isSuccess = false }
-                })
-                return isSuccess
-            },
-            generateHashlink() {
-                let isError = false
-                if(!this.hashlinkInfo.fileserver ||
-                    this.hashlinkInfo.fileserver.length == 0) {
-                    isError = true
-                    this.$refs.fileserver.classList.add('hasError')
-                } else {
-                    this.$refs.fileserver.classList.remove('hasError')
-                }
-
-                if(!this.hashlinkInfo.ocaRepo.host ||
-                    this.hashlinkInfo.ocaRepo.host.length == 0) {
-                    isError = true
-                    this.$refs.ocaRepoHost.classList.add('hasError')
-                } else {
-                    this.$refs.ocaRepoHost.classList.remove('hasError')
-                }
-
-                if(this.hashlinkInfo.ocaRepo.namespace.length == 0) {
-                    isError = true
-                    this.$refs.ocaRepoNamespace.classList.add('hasError')
-                } else {
-                    this.$refs.ocaRepoNamespace.classList.remove('hasError')
-                }
-
-                if(!isError) {
-                    eventBus.$emit(
-                        EventHandlerConstant.GENERATE_HASHLINK,
-                        {
-                            form: this.formData,
-                            data: this.savedData,
-                            info: this.hashlinkInfo
-                        }
-                    )
-                }
             },
             closeModal() {
-                this.selectedLang = null
-                this.previewModal.modal('hide');
-                this.formSaved = null
-                this.savedData = null
-                this.hashlinkInfo.ocaRepo.namespace = ""
-                this.generatedHashlink = null,
-                this.generatedHashlinkMeta = null
-            },
-            getData() {
-                return this.$refs.FormBuilderGui.getValue();
+                this.dialogModal.closeModal();
             }
         },
         mounted() {
-            this.previewModal = $(this.$el);
+            this.dialogModal = this.$refs.DialogModal
             this.formReadonly = this.readonly
-
-            eventBus.$on(EventHandlerConstant.HASHLINK_GENERATED, ({hashlink, meta}) => {
-              this.generatedHashlink = hashlink
-              this.generatedHashlinkMeta = meta
-            })
-            $(".modal").on('hidden.bs.modal', () => {
-              this.closeModal()
-            });
         }
     }
 </script>
