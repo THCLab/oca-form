@@ -1,5 +1,5 @@
 <template>
-    <dialog-component ref="DialogModal" size="xl" id="multiPreviewModal" :readonly="readonly" headerLabel="Service" :confirmLabel="confirmLabel">
+    <dialog-component ref="DialogModal" size="xl" id="multiPreviewModal" :readonly="readonlyDialog" :headerLabel="label ? label : 'Service'" :confirmLabel="confirmLabel">
         <template v-slot:body>
           <div class='row'>
             <div class="form-preview" v-for="(form, i) in forms"
@@ -33,18 +33,19 @@
     export default {
         name: "MultiPreviewComponent",
         components: { FormBuilderGui, DialogComponent },
-        props: ['forms', 'confirmLabel'],
+        props: ['forms', 'label', 'confirmLabel', 'readonly'],
         data: function() {
           return {
             dialogModal: null,
             selectedLang: [],
-            readonly: null
+            readonlyDialog: null
           }
         },
         watch: {
           forms: {
             handler: function() {
-              this.readonly = this.forms.every(form => form.readonly)
+              this.readonlyDialog = this.readonly != false &&
+                this.forms.every(form => form.readonly)
             },
             deep: true
           }
