@@ -41,7 +41,7 @@
             openModal(formData, formInput = null) {
                 if(this.$parent.language) {
                   this.selectedLang = this.$parent.language
-                } else if(this.alternatives.length) {
+                } else if(this.alternatives && this.alternatives.length) {
                   this.selectedLang = this.alternatives[0].language
                 }
                 this.formInput = formInput
