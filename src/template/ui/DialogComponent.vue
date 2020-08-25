@@ -18,8 +18,12 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" v-if="!readonly" @click="confirmForm">{{ confirmLabel }}</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" v-if="!readonly" @click="confirmForm" :disabled="confirmProcessing">
+                    <span class="spinner-border spinner-border-sm"
+                      role="status" aria-hidden="true" v-show="confirmProcessing"></span>
+                    {{ confirmLabel }}
+                  </button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -30,7 +34,7 @@
     export default {
         name: "DialogComponent",
         components: {},
-        props: ['headerLabel', 'confirmLabel', 'size', 'readonly'],
+        props: ['headerLabel', 'confirmLabel', 'confirmProcessing', 'size', 'readonly'],
         data: () => ({
             element: null,
         }),
