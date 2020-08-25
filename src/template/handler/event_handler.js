@@ -8,6 +8,7 @@ var EventHandlerConstant = {
     EXPORT_FORM: 'export_form',
     PUBLISH_FORM: 'publish_form',
     SAVE_PREVIEW: 'save_preview',
+    REJECT_PREVIEW: 'reject_preview',
     ON_LANGUAGE_CHANGE: 'on_language_change',
     ERROR: 'error_occurred',
     // sidebar

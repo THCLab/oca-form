@@ -1,5 +1,8 @@
 <template>
-    <dialog-component ref="DialogModal" size="xl" id="multiPreviewModal" :readonly="readonlyDialog" :headerLabel="label ? label : 'Service'" :confirmLabel="confirmLabel" :confirmProcessing="confirmProcessing">
+    <dialog-component ref="DialogModal" size="xl" id="multiPreviewModal"
+      :readonly="readonlyDialog" :headerLabel="label ? label : 'Service'"
+      :confirmLabel="confirmLabel" :confirmProcessing="confirmProcessing"
+      :rejectLabel="rejectLabel" :rejectProcessing="rejectProcessing">
         <template v-slot:body>
           <div class='row'>
             <div class="form-preview" v-for="(form, i) in forms"
@@ -33,7 +36,9 @@
     export default {
         name: "MultiPreviewComponent",
         components: { FormBuilderGui, DialogComponent },
-        props: ['forms', 'label', 'confirmLabel', 'confirmProcessing', 'readonly'],
+        props: ['forms', 'label', 'readonly',
+          'confirmLabel', 'confirmProcessing',
+          'rejectLabel', 'rejectProcessing'],
         data: function() {
           return {
             dialogModal: null,
@@ -91,6 +96,9 @@
                 })
                 if(savedForms.some(f => !f.isValid)) { return }
                 eventBus.$emit(EventHandlerConstant.SAVE_PREVIEW, savedForms[0].savedData)
+            },
+            rejectForm() {
+                eventBus.$emit(EventHandlerConstant.REJECT_PREVIEW, {})
             },
             closeModal() {
                 this.dialogModal.closeModal();

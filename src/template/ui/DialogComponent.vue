@@ -18,10 +18,15 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" v-if="!readonly" @click="confirmForm" :disabled="confirmProcessing">
+                  <button type="button" class="btn btn-primary" v-if="!readonly" @click="confirmForm" :disabled="processing" v-show="confirmLabel">
                     <span class="spinner-border spinner-border-sm"
                       role="status" aria-hidden="true" v-show="confirmProcessing"></span>
                     {{ confirmLabel }}
+                  </button>
+                  <button type="button" class="btn btn-danger" v-if="!readonly" @click="rejectForm" :disabled="processing" v-show="rejectLabel">
+                    <span class="spinner-border spinner-border-sm"
+                      role="status" aria-hidden="true" v-show="rejectProcessing"></span>
+                    {{ rejectLabel }}
                   </button>
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
@@ -34,10 +39,18 @@
     export default {
         name: "DialogComponent",
         components: {},
-        props: ['headerLabel', 'confirmLabel', 'confirmProcessing', 'size', 'readonly'],
+        props: ['headerLabel', 'size', 'readonly',
+          'confirmLabel', 'confirmProcessing',
+          'rejectLabel', 'rejectProcessing'
+        ],
         data: () => ({
             element: null,
         }),
+        computed: {
+          processing: function() {
+            return this.confirmProcessing || this.rejectProcessing
+          }
+        },
         methods: {
             openModal() {
                 // open
@@ -45,6 +58,9 @@
             },
             confirmForm() {
                 this.$parent.saveForm()
+            },
+            rejectForm() {
+                this.$parent.rejectForm()
             },
             closeModal() {
                 this.element.modal('hide');
