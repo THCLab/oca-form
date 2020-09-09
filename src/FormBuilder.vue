@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form-builder-template v-if="type === 'template'" ref="FormBuilderTemplate" :form="form">
+        <form-builder-template v-if="type === 'template'" ref="FormBuilderTemplate" :form="form" :standards="standards">
           <template #afterSidebar><slot name="afterSidebar"/></template>
         </form-builder-template>
         <form-builder-gui v-else-if="type === 'gui'" ref="FormBuilderGui" :form="form"></form-builder-gui>
@@ -49,6 +49,10 @@
                     sections: [_.cloneDeep(FORM_CONSTANTS.Section)],
                     translations: []
                 })
+            },
+            standards: {
+                type: Array,
+                default: () => ([])
             },
             value: null,
             options: {

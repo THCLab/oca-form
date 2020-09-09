@@ -4,6 +4,9 @@
         <div class="col-md-9">
             <translation-component :form="form"></translation-component>
         </div>
+        <div class="col-md-3">
+            <standard-component :standards="standards"></standard-component>
+        </div>
         <div class="col-md-9 form-builder">
             <section-component :form="form" ref="SectionComponent"></section-component>
         </div>
@@ -26,6 +29,7 @@
     import SidebarComponent from "./ui/SidebarComponent";
     import PreviewComponent from "./ui/PreviewComponent";
     import TranslationComponent from "./ui/TranslationComponent";
+    import StandardComponent from "./ui/StandardComponent";
     import { EventHandlerConstant, eventBus } from '@/template/handler/event_handler'
     dom.watch();
 
@@ -41,11 +45,16 @@
             PreviewComponent,
             Affix, SidebarComponent,
             SectionComponent,
-            TranslationComponent
+            TranslationComponent,
+            StandardComponent
         },
         props: {
             form: {
                 type: Object
+            },
+            standards: {
+                type: Array,
+                default: () => ([])
             }
         },
         data: () => ({
