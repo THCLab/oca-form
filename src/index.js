@@ -6,6 +6,7 @@ import { EventHandlerConstant, eventBus } from '@/template/handler/event_handler
 import PreviewComponent from '@/template/ui/PreviewComponent'
 import MultiPreviewComponent from '@/template/ui/MultiPreviewComponent'
 import FormBuilder from '@/FormBuilder'
+import vuexModulesPlugin from '@/store'
 
 export {
   resolveZipFile, exportToZip,
@@ -13,5 +14,6 @@ export {
   createSchemaFromForm,
   EventHandlerConstant, eventBus,
   PreviewComponent, MultiPreviewComponent,
-  FormBuilder
+  FormBuilder,
+  vuexModulesPlugin
 }
