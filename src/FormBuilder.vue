@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form-builder-template v-if="type === 'template'" ref="FormBuilderTemplate" :form="form" :standards="standards">
+        <form-builder-template v-if="type === 'template'" ref="FormBuilderTemplate" :form="form">
           <template #afterSidebar><slot name="afterSidebar"/></template>
         </form-builder-template>
         <form-builder-gui v-else-if="type === 'gui'" ref="FormBuilderGui" :form="form"></form-builder-gui>
@@ -12,6 +12,8 @@
 
 <script>
     require('@/config/loader');
+
+    import { mapActions } from "vuex"
 
     // load necessary
     import {Hooks as GUI_Hooks} from './gui/components/hook_lists';
@@ -76,6 +78,7 @@
             }
         },
         methods: {
+            ...mapActions("Standards", ["add_standard", "delete_all_standards"]),
             getValue() {
                 if (this.type === 'template') {
                     return this.$refs.FormBuilderTemplate.getValue();
@@ -163,6 +166,10 @@
         },
         mounted() {
             this.setValue(this.value);
+            this.delete_all_standards()
+            this.standards.forEach(standard => {
+                this.add_standard(standard)
+            })
         }
     }
 </script>

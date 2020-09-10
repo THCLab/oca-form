@@ -3,8 +3,8 @@
         <div class="col-md-1"></div>
         <label class="col-md-3 col-form-label">Standard:</label>
         <div class="col-md-7">
-            <select class="form-control form-control-sm" v-model="standardList.selected">
-                <option v-for="standard in standardList.all" :key="standard.name">
+            <select class="form-control form-control-sm" v-model="standards.selected">
+                <option v-for="standard in standards.all" :key="standard.name">
                     {{ standard.name }}
                 </option>
             </select>
@@ -13,27 +13,43 @@
 </template>
 
 <script>
+    import { mapState, mapActions } from 'vuex'
+
     export default {
         components: {},
         name: "standard-component",
-        props: {
-            standards: {
-                type: Array,
-                default: () => ([])
-            }
-        },
         data: function() {
             return {
-                standardList: {
+                standards: {
                     default: { name: 'None' },
-                    all: this.standards,
+                    all: [],
                     selected: null
                 }
             }
         },
+        computed: {
+            ...mapState('Standards', ['standard_list'])
+        },
+        watch: {
+          standard_list: {
+            handler: function() {
+              this.standards.all = [
+                this.standards.default, ...this.standard_list
+              ]
+            },
+            immediate: true
+          },
+          'standards.selected': {
+            handler: function() {
+              this.set_current_standard(this.standards.selected)
+            }
+          }
+        },
+        methods: {
+          ...mapActions('Standards', ['set_current_standard'])
+        },
         mounted() {
-          this.standardList.all.unshift(this.standardList.default)
-          this.standardList.selected = this.standardList.default.name
+          this.standards.selected = this.standards.default.name
         }
     }
 </script>
