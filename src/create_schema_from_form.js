@@ -13,7 +13,11 @@ export const createSchemaFromForm = (baseForm, form, standard) => {
 
     baseInfo.put_xwzc9p$("name", baseForm.name)
     baseInfo.put_xwzc9p$("description", baseForm.description)
-    baseInfo.put_xwzc9p$("classification", baseForm.classification)
+    if (standard && standard.name) {
+      baseInfo.put_xwzc9p$("classification", standard.name)
+    } else {
+      baseInfo.put_xwzc9p$("classification", baseForm.classification)
+    }
 
     const attrNames = form.sections.map(s => s.row.controls.map(c => c.attrName)).flat(1)
     const duplicates = attrNames.filter((attrName, index) => {

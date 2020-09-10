@@ -56,6 +56,10 @@
                 type: Array,
                 default: () => ([])
             },
+            standard: {
+                type: String,
+                default: ""
+            },
             value: null,
             options: {
                 type: Object,
@@ -78,7 +82,10 @@
             }
         },
         methods: {
-            ...mapActions("Standards", ["add_standard", "delete_all_standards"]),
+            ...mapActions(
+              "Standards",
+              ["add_standard", "delete_all_standards", "set_current_standard"]
+            ),
             getValue() {
                 if (this.type === 'template') {
                     return this.$refs.FormBuilderTemplate.getValue();
@@ -170,6 +177,7 @@
             this.standards.forEach(standard => {
                 this.add_standard(standard)
             })
+            this.set_current_standard(this.standard)
         }
     }
 </script>

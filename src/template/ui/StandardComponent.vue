@@ -28,7 +28,7 @@
             }
         },
         computed: {
-            ...mapState('Standards', ['standard_list'])
+            ...mapState('Standards', ['standard_list', 'current_standard'])
         },
         watch: {
           standard_list: {
@@ -49,7 +49,13 @@
           ...mapActions('Standards', ['set_current_standard'])
         },
         mounted() {
-          this.standards.selected = this.standards.default.name
+          this.$nextTick(function() {
+            if (this.current_standard) {
+              this.standards.selected = this.current_standard.name
+            } else {
+              this.standards.selected = this.standards.default.name
+            }
+          })
         }
     }
 </script>
