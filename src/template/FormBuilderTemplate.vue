@@ -23,6 +23,7 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
     import SectionComponent from "./ui/SectionComponent";
     import { dom } from '@fortawesome/fontawesome-svg-core'
     import { Affix } from 'vue-affix'
@@ -57,6 +58,9 @@
           language: null,
           alternatives: {}
         }),
+        computed: {
+          ...mapState('Standards', ['current_standard'])
+        },
         methods: {
             getValue() {
                 return this.form;
@@ -68,14 +72,18 @@
                 this.$refs.PreviewComponent.openModal(this.form);
             },
             download() {
-                eventBus.$emit(EventHandlerConstant.EXPORT_FORM, this.form)
+                eventBus.$emit(EventHandlerConstant.EXPORT_FORM, {
+                  form: this.form,
+                  standard: this.current_standard
+                })
             },
             publish(publishInfo) {
                 eventBus.$emit(
                   EventHandlerConstant.PUBLISH_FORM,
                   {
                     info: publishInfo,
-                    form: this.form
+                    form: this.form,
+                    standard: this.current_standard
                   }
                 )
             }

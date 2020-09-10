@@ -7,7 +7,7 @@ import DateFormater from './date_formater'
 
 const facade = new odca.Facade()
 
-export const createSchemaFromForm = (baseForm, form) => {
+export const createSchemaFromForm = (baseForm, form, standard) => {
     const baseInfo = HashMap_init()
     const attributes = []
 
@@ -31,6 +31,9 @@ export const createSchemaFromForm = (baseForm, form) => {
       section.row.controls.forEach(control => {
           if (control.attrName.length <= 0) {
             throw "Attribute name cannot be empty"
+          }
+          if (standard && standard.attributes && !standard.attributes.includes(control.attrName)) {
+            throw `Attribute '${control.attrName}' does not match ${standard.name} standard`
           }
 
           const format = (control.dateFormat &&
