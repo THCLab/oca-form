@@ -28,7 +28,7 @@ label.underline {
 
 .onSelect {
     /*margin: 0;*/
-    border: 1px solid aqua;
+    border: 2px solid #78BCFF;
 }
 
 .clickable {
