@@ -1,6 +1,6 @@
 <template>
     <div class="controlItemWrapper" :class="control.className" :data-control-name="control.name">
-        <div class="controlItem row" :id="control.name" v-if="labelPosition === 'left'">
+        <div class="controlItem row" :class="{ onWarn: warned, onError: !valid }" :id="control.name" v-if="labelPosition === 'left'">
             <slot name="label"/>
 
             <div :class="inputClass" class="input-group">
@@ -17,6 +17,7 @@
 
             <slot name="options"/>
             <slot name="information"/>
+            <slot name="errors"/>
         </div>
         <div class="controlItem row" :id="control.name" v-else>
             <div class="form-group col-md-12">
@@ -44,7 +45,7 @@
 
     export default {
         name: "TimePickerControl",
-        props: ['control', 'labelPosition', 'inputClass'],
+        props: ['control', 'labelPosition', 'inputClass', 'valid', 'warned'],
         components: {FontAwesomeIcon},
         data: () => ({
             $control: null,
