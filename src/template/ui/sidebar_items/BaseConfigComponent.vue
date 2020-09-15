@@ -30,6 +30,10 @@
             <div class="col-md-10">
                 <vue-bootstrap-typeahead
                   ref="inputAttributeName"
+                  :class="{
+                    error: errorLabels(control, 'error').includes('attrName'),
+                    warning: errorLabels(control, 'warning').includes('attrName')
+                  }"
                   :showOnFocus="true"
                   :minMatchingChars="1"
                   @hit="control.isPII = true"
@@ -52,7 +56,7 @@
 <script>
     import VueBootstrapTypeahead from "vue-typeahead-bootstrap";
     import { TYPE_MAPPER } from '@/config/constants'
-    import { mapState } from 'vuex'
+    import { mapState, mapGetters } from 'vuex'
 
     const default_bit = [
       "first_name", "last_name", "mac_address", "name", "entity_name",
@@ -83,7 +87,8 @@
           }
         },
         computed: {
-          ...mapState('Standards', ['current_standard'])
+          ...mapState('Standards', ['current_standard']),
+          ...mapGetters('ControlErrors', ['control_errors'])
         },
         watch: {
           current_standard: {
@@ -98,6 +103,11 @@
           }
         },
         methods: {
+          errorLabels(control, type = null) {
+            const errors = this.control_errors(control.name)
+            const filtered = type ? errors.filter(e => e.type == type) : errors
+            return filtered.map(e => e.label)
+          },
           setAttributeNameValue() {
             this.$refs.inputAttributeName.inputValue = this.control.attrName;
           }
@@ -117,5 +127,15 @@
     .boxes {
       display: flex;
       justify-content: space-between;
+    }
+
+    .warning {
+      border: 1px solid orange;
+      border-radius: 4px;
+    }
+
+    .error {
+      border: 1px solid red;
+      border-radius: 4px;
     }
 </style>
