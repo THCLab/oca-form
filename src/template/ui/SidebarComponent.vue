@@ -123,6 +123,10 @@
                 Hooks.Sidebar.afterOpenConfig.run(this.controlInfo);
             });
 
+            eventBus.$on(EventHandlerConstant.DEACTIVATE_EDITOR_SIDEBAR, () => {
+                this.isConfig = false;
+            });
+
             eventBus.$on(EventHandlerConstant.REMOVE_CONTROL, ({ controlInfo }) => {
                   if (this.controlInfo && this.controlInfo.name == controlInfo.name) {
                       this.isConfig = false;

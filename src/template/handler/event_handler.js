@@ -13,6 +13,7 @@ var EventHandlerConstant = {
     ERROR: 'error_occurred',
     // sidebar
     ACTIVATE_EDITOR_SIDEBAR: 'activate_editor_sidebar',
+    DEACTIVATE_EDITOR_SIDEBAR: 'deactivate_editor_sidebar',
     ON_APPLY_EDITOR_SIDEBAR: 'on_apply_editor_sidebar',
 };
 
