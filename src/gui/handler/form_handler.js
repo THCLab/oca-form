@@ -126,6 +126,37 @@ FormHandler.clearErrorField = function() {
     $("input.control-error").removeClass('control-error');
 };
 
+FormHandler.validateControls = function (form, standard, addError, deleteControlErrors) {
+  form.sections.forEach(section => {
+    section.row.controls.forEach(control => {
+      const result = validateControl(control, standard)
+      deleteControlErrors(control.name)
+      if (!result.success) {
+        result.errors.forEach(error => addError({
+          controlName: control.name, error
+        }))
+      }
+    })
+  })
+}
+
+const validateControl = (control, standard) => {
+  const errors = []
+  if (control.attrName.length == 0) {
+    errors.push({ label: 'attrName', type: 'error', msg: 'Attribute name cannot be empty' })
+  }
+
+  if (standard && !standard.attributes.includes(control.attrName)) {
+    errors.push({label: 'attrName', type: 'warning', msg: `Attribute name does not match selected standard (${standard.name})`})
+  }
+
+  if(errors.length == 0) {
+    return { success: true }
+  } else {
+    return { success: false, errors }
+  }
+}
+
 FormHandler.validate = function (form) {
     FormHandler.clearErrorField();
 

@@ -13,7 +13,7 @@
 <script>
     require('@/config/loader');
 
-    import { mapActions } from "vuex"
+    import { mapState, mapActions } from "vuex"
 
     // load necessary
     import {Hooks as GUI_Hooks} from './gui/components/hook_lists';
@@ -66,6 +66,9 @@
                 default: () => ({})
             }
         },
+        computed: {
+          ...mapState("Standards", ["current_standard"])
+        },
         watch: {
             form: {
                 handler(val) {
@@ -79,6 +82,12 @@
             },
             value(val) {
                 this.setValue(val);
+            },
+            current_standard: {
+              handler: function() {
+                eventBus.$emit(EventHandlerConstant.DEACTIVATE_EDITOR_SIDEBAR)
+                this.$emit('change', this.form);
+              }
             }
         },
         methods: {
@@ -86,6 +95,7 @@
               "Standards",
               ["add_standard", "delete_all_standards", "set_current_standard"]
             ),
+            ...mapActions("ControlErrors", ["add_error", "delete_control_errors"]),
             getValue() {
                 if (this.type === 'template') {
                     return this.$refs.FormBuilderTemplate.getValue();
@@ -178,6 +188,10 @@
                 this.add_standard(standard)
             })
             this.set_current_standard(this.standard)
+
+            this.$on('change', (form) => {
+              FormHandler.validateControls(form, this.current_standard, this.add_error, this.delete_control_errors)
+            })
         }
     }
 </script>
