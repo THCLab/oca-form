@@ -7,17 +7,13 @@ import DateFormater from './date_formater'
 
 const facade = new odca.Facade()
 
-export const createSchemaFromForm = (baseForm, form, standard) => {
+export const createSchemaFromForm = (baseForm, form) => {
     const baseInfo = HashMap_init()
     const attributes = []
 
     baseInfo.put_xwzc9p$("name", baseForm.name)
     baseInfo.put_xwzc9p$("description", baseForm.description)
-    if (standard && standard.name) {
-      baseInfo.put_xwzc9p$("classification", standard.name)
-    } else {
-      baseInfo.put_xwzc9p$("classification", baseForm.classification)
-    }
+    baseInfo.put_xwzc9p$("classification", baseForm.classification)
 
     const attrNames = form.sections.map(s => s.row.controls.map(c => c.attrName)).flat(1)
     const duplicates = attrNames.filter((attrName, index) => {

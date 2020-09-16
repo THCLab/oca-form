@@ -73,8 +73,7 @@
             },
             download() {
                 eventBus.$emit(EventHandlerConstant.EXPORT_FORM, {
-                  form: this.form,
-                  standard: this.current_standard
+                  form: this.form
                 })
             },
             publish(publishInfo) {
@@ -82,8 +81,7 @@
                   EventHandlerConstant.PUBLISH_FORM,
                   {
                     info: publishInfo,
-                    form: this.form,
-                    standard: this.current_standard
+                    form: this.form
                   }
                 )
             }
