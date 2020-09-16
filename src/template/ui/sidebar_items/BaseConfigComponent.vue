@@ -38,7 +38,7 @@
                   :minMatchingChars="1"
                   @hit="control.isPII = true"
                   v-model="control.attrName"
-                  :data="bit_list"
+                  :data="suggest_list"
                 >
                     <template slot="suggestion" slot-scope="{ data, htmlText }">
                         PII:
@@ -58,21 +58,6 @@
     import { TYPE_MAPPER } from '@/config/constants'
     import { mapState, mapGetters } from 'vuex'
 
-    const default_bit = [
-      "first_name", "last_name", "mac_address", "name", "entity_name",
-      "full_name", "address", "street", "city", "building_number", "email",
-      "postal_code", "zip_code", "skype", "linkedin_profile_url",
-      "facebook_profile_url", "passport_number", "social_security_number",
-      "national_id", "national_insurance_number", "VIN", "IBAN", "credit_card",
-      "debit_card", "PIN", "DID", "employee_identifier", "account_identifier",
-      "membership_identifier", "institutional_identifier", "case_identifier",
-      "user_identifier", "password", "signature", "digital_certificate",
-      "photo", "video", "vocal_sound_bits", "birth_date", "transaction_date",
-      "chromosomal", "DNA", "RNA", "voice_prints", "iris_scan", "facial_image",
-      "ip", "SSID", "bluetooth_mac_address", "GPS_coordinates",
-      "browser_fingerprint", "iot_identifier", "IMEI", "IMSI", "text"
-    ]
-
     export default {
         name: "BaseConfigComponent",
         components: { VueBootstrapTypeahead },
@@ -83,7 +68,7 @@
         },
         data() {
           return {
-            bit_list: default_bit
+            suggest_list: []
           }
         },
         computed: {
@@ -94,9 +79,9 @@
           current_standard: {
             handler: function() {
               if(this.current_standard) {
-                this.bit_list = this.current_standard.attributes
+                this.suggest_list = this.current_standard.attributes
               } else {
-                this.bit_list = default_bit
+                this.suggest_list = []
               }
             },
             immediate: true
