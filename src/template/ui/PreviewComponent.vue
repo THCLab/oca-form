@@ -1,5 +1,8 @@
 <template>
-    <dialog-component ref='DialogModal' size='lg' id="previewModal" :readonly="readonly" :headerLabel="label" confirmLabel="Save">
+    <dialog-component ref='DialogModal' size='lg' id="previewModal"
+    :readonly="readonly" :headerLabel="label"
+    :confirmLabel="confirmLabel ? confirmLabel : 'Save'"
+    :confirmProcessing="confirmProcessing">
         <template v-slot:header>
             <select
               class="form-control col-md-3"
@@ -27,7 +30,8 @@
     export default {
         name: "PreviewComponent",
         components: { FormBuilderGui, DialogComponent },
-        props: ['form', 'alternatives', 'readonly'],
+        props: ['form', 'alternatives', 'readonly',
+          'confirmLabel', 'confirmProcessing'],
         data: () => ({
             dialogModal: null,
             selectedLang: null,
