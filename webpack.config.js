@@ -11,7 +11,7 @@ module.exports = {
     filename: 'main.js',
 
     libraryTarget: 'umd',
-    library: 'odca-form'
+    library: 'oca.js-vue'
   },
   module: {
     rules: [

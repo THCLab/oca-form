@@ -1,11 +1,11 @@
-import * as odcaPkg from 'odca'
-const odca = odcaPkg.com.thehumancolossuslab.odca
+import * as ocaPkg from 'oca.js'
+const oca = ocaPkg.com.thehumancolossuslab.oca
 import Kotlin from 'kotlin'
 var HashMap_init = Kotlin.kotlin.collections.HashMap_init_q3lmfv$;
 import { TYPE_MAPPER } from './config/constants'
 import DateFormater from './date_formater'
 
-const facade = new odca.Facade()
+const facade = new oca.Facade()
 
 export const createSchemaFromForm = (baseForm, form) => {
     const baseInfo = HashMap_init()
@@ -77,7 +77,7 @@ export const createSchemaFromForm = (baseForm, form) => {
           })
 
           attributes.push(
-            new odca.AttributeDto(
+            new oca.AttributeDto(
               control.attrName,
               control.attrType,
               control.isPII,

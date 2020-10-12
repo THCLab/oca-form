@@ -1,5 +1,5 @@
 {
-  "name": "odca-form",
+  "name": "oca.js-vue",
   "version": "0.0.36",
   "repository": "github:THCLab/odca-form",
   "license": "GPL-3.0",
@@ -22,7 +22,7 @@
     "jszip": "^3.2.2",
     "moment": "^2.22.2",
     "node-sass": "^4.13.0",
-    "odca": ">=0.0.10",
+    "oca.js": "^0.0.10",
     "popper.js": "^1.14.4",
     "sass-loader": "^8.0.2",
     "select2": "^4.0.6-rc.1",
