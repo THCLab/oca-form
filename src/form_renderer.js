@@ -31,6 +31,7 @@ export function renderForm(schemaObjects) {
     uuid: schemaData.uuid,
     label: schemaData.schemaBase.name,
     sections: [],
+    translations: [],
     type: ""
   }
 
@@ -46,8 +47,24 @@ export function renderForm(schemaObjects) {
     }
     let type = TYPE_MAPPER.typeInput[attrType] || "text"
 
+    const controlName = _.domUniqueID(`control_${type}_`)
+    const controlTranslations = { controlName: controlName, data: [] }
+
     let label, format, options, encoding, information
     label = labelOverlays[0].attrLabels.get_11rb$(attrUuid)
+    labelOverlays.forEach(labelOverlay => {
+      const translation = controlTranslations.data.find(t => t.language == labelOverlay.language)
+      if(translation) {
+        translation.label = labelOverlay.attrLabels.get_11rb$(attrUuid)
+      } else {
+        controlTranslations.data.push( {
+          language: labelOverlay.language,
+          label: labelOverlay.attrLabels.get_11rb$(attrUuid),
+          information: "",
+          dataOptions: []
+        })
+      }
+    })
 
     const formatOverlays = schemaData.formatOverlays.array_hd7ov6$_0
     if (formatOverlays.length != 0) {
@@ -60,16 +77,17 @@ export function renderForm(schemaObjects) {
     const entryOverlays = schemaData.entryOverlays.array_hd7ov6$_0
     if (entryOverlays.length != 0) {
       for(let entryOverlay of entryOverlays) {
+        const translation = controlTranslations.data.find(t => t.language == entryOverlay.language)
         let entries = entryOverlay.attrEntries.get_11rb$(attrUuid)
         if (entries) {
           if (attrType != "Boolean") {
             type = "select"
           }
 
-          options = entries.array_hd7ov6$_0.map(entry => {
-            return { id: entry, text: entry }
+          options = entries.array_hd7ov6$_0.map((entry, index) => {
+            return { id: index, text: entry }
           })
-          break
+          translation.dataOptions = options
         }
       }
     }
@@ -81,34 +99,51 @@ export function renderForm(schemaObjects) {
     const informationOverlays = schemaData.informationOverlays.array_hd7ov6$_0
     if (informationOverlays.length != 0) {
       for(let informationOverlay of informationOverlays) {
+        const translation = controlTranslations.data.find(t => t.language == informationOverlay.language)
         information = informationOverlay.attrInformation.get_11rb$(attrUuid)
-        if (information) {
-          break
-        }
+
+        translation.information = informationOverlay.attrInformation.get_11rb$(attrUuid) || ""
       }
     }
 
-    const controlName = _.domUniqueID(`control_${type}_`)
-
-    return {...FORM_CONSTANTS.Control,
-      ...{
-        uuid: attrUuid,
-        type: type,
-        name: controlName,
-        fieldName: controlName,
-        attrName: attrName,
-        attrType: attrType,
-        isPII: pii_attributes.includes(attrUuid),
-        label: label || null,
-        dateFormat: format || null,
-        dataOptions: options || null,
-        isMultiple: attrType.includes("Array"),
-        encoding: encoding || defaultEncoding,
-        information: information,
-        timeFormat: "HH:mm"
-      }
+    return {
+      control: {...FORM_CONSTANTS.Control,
+        ...{
+          uuid: attrUuid,
+          type: type,
+          name: controlName,
+          fieldName: controlName,
+          attrName: attrName,
+          attrType: attrType,
+          isPII: pii_attributes.includes(attrUuid),
+          label: label || null,
+          dateFormat: format || null,
+          dataOptions: options || null,
+          isMultiple: attrType.includes("Array"),
+          encoding: encoding || defaultEncoding,
+          information: information,
+          timeFormat: "HH:mm"
+        }
+      },
+      translations: controlTranslations
     }
   }
+
+  labelOverlays.forEach(labelOverlay => {
+    let formTranslation = form.translations.find(t => t.language == labelOverlay.language)
+    if(!formTranslation) {
+      formTranslation = {
+        language: labelOverlay.language,
+        data: { sections: [], controls: [] }
+      }
+    }
+    const categories = labelOverlay.attrCategories.array_hd7ov6$_0
+    categories.forEach((categoryLink, index) => {
+      const categoryLabel = labelOverlay.categoryLabels.get_11rb$(categoryLink)
+      formTranslation.data.sections.push({ id: index, label: categoryLabel })
+    })
+    form.translations.push(formTranslation)
+  })
 
   const labelOverlay = labelOverlays[0]
   const categories = labelOverlay.attrCategories.array_hd7ov6$_0
@@ -126,8 +161,19 @@ export function renderForm(schemaObjects) {
 
     categoryAttributes.forEach(attrUuid => {
       let attrName = leftAttributes.remove_11rb$(attrUuid)
-      let control = generateControl(attrUuid, attrName)
+      let control, translations
+      ({ control, translations } = generateControl(attrUuid, attrName))
       section.row.controls.push(control)
+      translations.data.forEach(translation => {
+        let formTranslation = form.translations.find(t => t.language == translation.language)
+        formTranslation.data.controls.push({
+          fieldName: control.fieldName,
+          label: translation.label,
+          defaultValue: "",
+          information: translation.information,
+          dataOptions: translation.dataOptions
+        })
+      })
     })
   })
   if (leftAttributes.size > 0) {
@@ -141,8 +187,19 @@ export function renderForm(schemaObjects) {
       let element = iterator.next()
       let attrUuid = element.key
       let attrName = element.value
-      let control = generateControl(attrUuid, attrName)
+      let control, translations
+      ({ control, translations } = generateControl(attrUuid, attrName))
       section.row.controls.push(control)
+      translations.data.forEach(translation => {
+        let formTranslation = form.translations.find(t => t.language == translation.language)
+        formTranslation.data.controls.push({
+          fieldName: control.fieldName,
+          label: translation.label,
+          defaultValue: "",
+          information: translation.information,
+          dataOptions: translation.dataOptions
+        })
+      })
     }
   }
 

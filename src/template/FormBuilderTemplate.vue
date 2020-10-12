@@ -1,13 +1,16 @@
 <template>
     <div class="row" style="margin: 0 20px;">
         <div class="col-md-9">
+            <translation-component :form="form"></translation-component>
+        </div>
+        <div class="col-md-9">
             <section-component :form="form" ref="SectionComponent"></section-component>
         </div>
         <div class="col-md-3">
             <sidebar-component></sidebar-component>
         </div>
 
-        <preview-component ref="PreviewComponent" :form="form"></preview-component>
+        <preview-component ref="PreviewComponent" :alternatives="alternatives" :form="form"></preview-component>
     </div>
 </template>
 
@@ -16,6 +19,7 @@
     import { dom } from '@fortawesome/fontawesome-svg-core'
     import SidebarComponent from "./ui/SidebarComponent";
     import PreviewComponent from "./ui/PreviewComponent";
+    import TranslationComponent from "./ui/TranslationComponent";
     import { EventHandlerConstant, eventBus } from '@/template/handler/event_handler'
     dom.watch();
 
@@ -30,13 +34,18 @@
         components: {
             PreviewComponent,
             SidebarComponent,
-            SectionComponent
+            SectionComponent,
+            TranslationComponent
         },
         props: {
             form: {
                 type: Object
             }
         },
+        data: () => ({
+          language: null,
+          alternatives: {}
+        }),
         methods: {
             getValue() {
                 return this.form;

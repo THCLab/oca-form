@@ -4,7 +4,9 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Default value</label>
-                    <input type="text" class="form-control" v-model="control.defaultValue">
+                    <input type="text" class="form-control"
+                    :placeholder="control.defaultValuePlaceholder"
+                    v-model="control.defaultValue">
                 </div>
             </div>
         </div>
@@ -13,7 +15,9 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Control label</label>
-                    <input type="text" class="form-control" v-model="control.label">
+                    <input type="text" class="form-control"
+                    :placeholder="control.labelPlaceholder"
+                    v-model="control.label">
                 </div>
             </div>
         </div>
@@ -22,7 +26,9 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <label>Information</label>
-                    <textarea row="2" class="form-control" v-model="control.information"></textarea>
+                    <textarea row="2" class="form-control"
+                      :placeholder="control.informationPlaceholder"
+                      v-model="control.information"></textarea>
                 </div>
             </div>
         </div>

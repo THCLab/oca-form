@@ -30,7 +30,7 @@
                         <font-awesome-icon icon="times" class="clickable" @click="removeOption(index)"></font-awesome-icon>
                     </td>
                     <td>
-                        <input type="text" class="form-control txtText" v-model="option.text">
+                        <input type="text" class="form-control txtText" :placeholder="option.placeholder" v-model="option.text">
                     </td>
                 </tr>
                 </tbody>
@@ -52,6 +52,7 @@
     import SelectAjaxModal from './common/SelectAjaxModal';
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
     import {FORM_CONSTANTS} from "@/config/constants";
+    import {eventBus, EventHandlerConstant} from '@/template/handler/event_handler';
 
     export default {
         name: "SelectConfigComponent",
@@ -69,9 +70,26 @@
         methods: {
             addOption() {
                 this.control.dataOptions.push(_.clone(FORM_CONSTANTS.OptionDefault));
+                const elIndex = this.control.dataOptions.length - 1
+                const previousEl = this.control.dataOptions[elIndex - 1]
+                this.control.dataOptions[elIndex].id = previousEl ? previousEl.id + 1 : 1
+                eventBus.$emit(
+                  EventHandlerConstant.CHANGE_DATA_OPTION_IN_CONTROL, {
+                    operation: 'add',
+                    controlInfo: this.control,
+                    optionIndex: elIndex
+                  }
+                )
             },
             removeOption(index) {
                 this.control.dataOptions.splice(index, 1);
+                eventBus.$emit(
+                  EventHandlerConstant.CHANGE_DATA_OPTION_IN_CONTROL, {
+                    operation: 'remove',
+                    controlInfo: this.control,
+                    optionIndex: index
+                  }
+                )
             },
             dataAjaxModal(e) {
                 this.$refs.SelectAjaxModal.openModal();
@@ -87,12 +105,6 @@
         watch: {
             'control.isMultiple': function() {
                 this.updateAttributeType()
-            },
-            'control.dataOptions': {
-                handler(newValues) {
-                  return newValues.forEach(v => v.id = v.text)
-                },
-                deep: true
             }
         },
         mounted() {

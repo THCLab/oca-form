@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-12 text-right">
+            <div class="col-md-6 text-left"></div>
+            <div class="col-md-6 text-right">
                 <button class="btn btn-default" @click="addSection">
                     <font-awesome-icon icon="plus"/>
                     Add category
@@ -53,7 +54,7 @@
                   <div class="card-header">
                     <div class="row">
                       <div class="col-md-8">
-                        <input type="text" class="form-control" placeholder="Category name" v-model="section.label">
+                        <input type="text" class="form-control" :placeholder="section.labelPlaceholder" v-model="section.label">
                       </div>
                       <div class="col-md-4 text-right">
                         <span class="fa-2x clickable" @click="removeSection(i)"><font-awesome-icon icon="times"/></span>
@@ -78,8 +79,10 @@
     import {Hooks} from '@/template/components/hook_lists';
     import {eventBus, EventHandlerConstant} from '@/template/handler/event_handler';
 
+    import Select2MultipleControl from "@/third_party_controls/Select2MultipleControl";
+
     export default {
-        components: {RowComponent, FontAwesomeIcon},
+        components: {RowComponent, FontAwesomeIcon, Select2MultipleControl},
         name: "section-component",
         props: {
             form: {
@@ -90,6 +93,25 @@
             showPublishForm: false,
             publishForm: { host: '', namespace: '' }
         }),
+        watch: {
+          'sectionsLabel': {
+            handler(val) {
+              const translation = this.form.translations.find(t => t.language == this.$parent.language)
+              if(!translation) { return }
+
+              val.forEach((label, index) => {
+                const translationSection = translation.data.sections.find(tS => tS.id == index)
+                translationSection.label = label
+              })
+            },
+            deep: true
+          }
+        },
+        computed: {
+          sectionsLabel() {
+            return this.form.sections.map(s => s.label)
+          }
+        },
         methods: {
             addSection() {
                 const sectionInfo = _.cloneDeep(FORM_CONSTANTS.Section)
@@ -103,6 +125,12 @@
                 }
 
                 this.form.sections.push(sectionInfo)
+                this.form.translations.forEach(t => {
+                  t.data.sections.push({
+                    id: this.form.sections.length - 1,
+                    label: sectionInfo.label
+                  })
+                })
 
                 // after hook
                 Hooks.Section.afterAdd.run(sectionInfo)
@@ -123,6 +151,9 @@
                 }
 
                 this.form.sections.splice(index, 1);
+                this.form.translations.forEach(t => {
+                  t.data.sections.splice(index, 1)
+                })
 
                 Hooks.Section.afterRemove.run(sectionInfo);
             },
@@ -145,6 +176,28 @@
                 this.form.sections = finalItems;
             },
             preview() {
+                this.$parent.alternatives = this.form.translations.map(translation => {
+                  const form = _.cloneDeep(this.form)
+                  form.sections.forEach((section, index) => {
+                    section.label = translation.data.sections[index].label
+
+                    section.row.controls.forEach(control => {
+                      const translationControl = translation.data.controls
+                        .find(c => c.fieldName == control.fieldName)
+                      control.label = translationControl.label
+                      control.defaultValue = translationControl.defaultValue
+                      control.information = translationControl.information
+                      if(control.dataOptions) {
+                        control.dataOptions.forEach(op => {
+                          const translationOp = translationControl.dataOptions.find(tOp => tOp.id == op.id)
+                          op.text = translationOp ? translationOp.text : ""
+                        })
+                      }
+                    })
+                  })
+
+                  return { language: translation.language, form: form }
+                })
                 this.$parent.preview();
             },
             download() {
@@ -152,13 +205,18 @@
             },
             publish() {
                 let isError = false
-                if(this.publishForm.host.length == 0) {
+                if(!this.publishForm.host || this.publishForm.host.length == 0) {
                     isError = true
                     this.$refs.publishHost.classList.add('hasError')
+                } else {
+                    this.$refs.publishHost.classList.remove('hasError')
                 }
+
                 if(this.publishForm.namespace.length == 0) {
                     isError = true
                     this.$refs.publishNamespace.classList.add('hasError')
+                } else {
+                    this.$refs.publishNamespace.classList.remove('hasError')
                 }
 
                 if(!isError) {
