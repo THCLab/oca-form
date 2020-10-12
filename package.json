@@ -1,6 +1,6 @@
 {
   "name": "odca-form",
-  "version": "0.0.20",
+  "version": "0.0.36",
   "repository": "github:THCLab/odca-form",
   "license": "GPL-3.0",
   "main": "dist/main.js",
@@ -12,6 +12,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.15",
     "@fortawesome/free-solid-svg-icons": "^5.7.2",
     "@fortawesome/vue-fontawesome": "^0.1.5",
+    "@ttskch/select2-bootstrap4-theme": "^1.4.0",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.12",
     "core-js": "^2.6.5",
@@ -28,10 +29,12 @@
     "underscore": "^1.9.1",
     "underscore-deep-extend": "^1.1.5",
     "vue": "^2.6.6",
-    "vue-bootstrap-typeahead": "^0.2.6",
+    "vue-affix": "^0.5.2",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.1.0",
     "vue-router": "^3.0.2",
+    "vue-typeahead-bootstrap": "^2.5.1",
+    "vuex": "^3.5.1",
     "webpack-jquery-ui": "^2.0.1"
   },
   "devDependencies": {

@@ -7,11 +7,13 @@
                 <div class="input-group">
                     <input type="number"
                            class="form-control"
+                           :class="{ 'is-invalid': !isValid }"
                            :readonly="this.control.readonly"
                            :name="control.fieldName"
                            :step="controlStep"
                            @change="numberChange"
                            v-model="control.value" />
+                    <slot name="errors"/>
                 </div>
             </div>
 
@@ -39,10 +41,7 @@
 
     export default {
         name: "NumberControl",
-        props: ['control', 'labelPosition'],
-        created() {
-            this.control.value = 0;
-        },
+        props: ['control', 'isValid', 'labelPosition'],
         mounted() {
             if (!_.isEmpty(this.control.defaultValue)) {
                 this.control.value = this.control.defaultValue;
@@ -54,6 +53,7 @@
         methods: {
             numberChange(e) {
                 let val = e.target.value;
+                if(val.length == 0) { return }
 
                 if (this.control.isInteger === false) {
                     this.control.value = parseFloat(val).toFixed(this.control.decimalPlace);

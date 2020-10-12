@@ -8,12 +8,12 @@ var EventHandlerConstant = {
     EXPORT_FORM: 'export_form',
     PUBLISH_FORM: 'publish_form',
     SAVE_PREVIEW: 'save_preview',
-    GENERATE_HASHLINK: 'generate_hashlink',
-    HASHLINK_GENERATED: 'hashlink_generated',
+    REJECT_PREVIEW: 'reject_preview',
     ON_LANGUAGE_CHANGE: 'on_language_change',
     ERROR: 'error_occurred',
     // sidebar
     ACTIVATE_EDITOR_SIDEBAR: 'activate_editor_sidebar',
+    DEACTIVATE_EDITOR_SIDEBAR: 'deactivate_editor_sidebar',
     ON_APPLY_EDITOR_SIDEBAR: 'on_apply_editor_sidebar',
 };
 

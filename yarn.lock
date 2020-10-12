@@ -202,6 +202,11 @@
     consola "^2.10.1"
     node-fetch "^2.6.0"
 
+"@ttskch/select2-bootstrap4-theme@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@ttskch/select2-bootstrap4-theme/-/select2-bootstrap4-theme-1.4.0.tgz#1e15ed14c5adbd6f86940811e195bde984aa9882"
+  integrity sha512-5WVMdFpQLx0vKxX0/LfapI0aE+qUYOuOuMjOc+ecN8vsr7plcBsgIbp4YtlpLmQR9aqgyM1QyqEiO/FwB+qaqQ==
+
 "@types/events@*":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/events/-/events-3.0.0.tgz#2862f3f58a9a7f7c3e78d79f130dd4d71c25c2a7"
@@ -5768,13 +5773,10 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
-vue-bootstrap-typeahead@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/vue-bootstrap-typeahead/-/vue-bootstrap-typeahead-0.2.6.tgz#8c1999a00bf4bf9fc906bae3a462482482cbc297"
-  integrity sha512-BcUAnvfN+PS0StL6E3endd37P7HUt9otk+8m7tsa2gkt2I2KY8O2Dma49oR8ie8iletvJAlAqpN+klF6ktPULQ==
-  dependencies:
-    resize-observer-polyfill "^1.5.0"
-    vue "^2.5.17"
+vue-affix@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/vue-affix/-/vue-affix-0.5.2.tgz#1f22f36262e3b867788adb00ae5bc3c3d12ea64b"
+  integrity sha512-60TedWOHHuqTpaZsTni9yyc+FwH4qP/Kjt6QegK7Hv1G+tP/CJ7+K1mTRsrEJkjUq55Q0a7hjHTblv+Y+u4o0Q==
 
 vue-class-component@^7.0.2, vue-class-component@^7.1.0:
   version "7.1.0"
@@ -5835,10 +5837,28 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue@^2.5.17, vue@^2.6.6:
+vue-typeahead-bootstrap@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/vue-typeahead-bootstrap/-/vue-typeahead-bootstrap-2.5.1.tgz#b0adfd082148b0687a0b930aea94fe4f9df38dd6"
+  integrity sha512-KVWFDih0A+qhZTW4BVgsCKj1UYDjfKufRPTQQO4vjpPnymGAtYXBeP7Yx53nOvZumDPpU1zoGUZlAPa4gBFVjg==
+  dependencies:
+    resize-observer-polyfill "^1.5.0"
+    vue "^2.5.17"
+
+vue@^2.5.17:
+  version "2.6.12"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
+  integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
+
+vue@^2.6.6:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
   integrity sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==
+
+vuex@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.5.1.tgz#f1b8dcea649bc25254cf4f4358081dbf5da18b3d"
+  integrity sha512-w7oJzmHQs0FM9LXodfskhw9wgKBiaB+totOdb8sNzbTB2KDCEEwEs29NzBZFh/lmEK1t5tDmM1vtsO7ubG1DFw==
 
 watchpack@^1.6.0:
   version "1.6.0"

@@ -51,7 +51,7 @@ export function renderForm(schemaObjects) {
     const controlTranslations = { controlName: controlName, data: [] }
 
     let label, format, options, encoding, information
-    label = labelOverlays[0].attrLabels.get_11rb$(attrUuid)
+    label = labelOverlays[0] ? labelOverlays[0].attrLabels.get_11rb$(attrUuid) : ""
     labelOverlays.forEach(labelOverlay => {
       const translation = controlTranslations.data.find(t => t.language == labelOverlay.language)
       if(translation) {
@@ -93,8 +93,8 @@ export function renderForm(schemaObjects) {
     }
 
     const encodeOverlays = schemaData.characterEncodingOverlays.array_hd7ov6$_0
-    encoding = encodeOverlays[0].attrCharacterEncoding.get_11rb$(attrUuid)
-    const defaultEncoding = encodeOverlays[0].defaultCharacterEncoding
+    encoding = encodeOverlays[0] ? encodeOverlays[0].attrCharacterEncoding.get_11rb$(attrUuid) : ""
+    const defaultEncoding = encodeOverlays[0] ? encodeOverlays[0].defaultCharacterEncoding : ""
 
     const informationOverlays = schemaData.informationOverlays.array_hd7ov6$_0
     if (informationOverlays.length != 0) {
@@ -146,36 +146,38 @@ export function renderForm(schemaObjects) {
   })
 
   const labelOverlay = labelOverlays[0]
-  const categories = labelOverlay.attrCategories.array_hd7ov6$_0
-  categories.forEach(categoryLink => {
-    const section = _.cloneDeep(FORM_CONSTANTS.Section)
-    section.name = _.domUniqueID("section_")
-    section.clientKey = section.name
+  if(labelOverlay) {
+    const categories = labelOverlay.attrCategories.array_hd7ov6$_0
+    categories.forEach(categoryLink => {
+      const section = _.cloneDeep(FORM_CONSTANTS.Section)
+      section.name = _.domUniqueID("section_")
+      section.clientKey = section.name
 
-    const categoryLabel = labelOverlay.categoryLabels.get_11rb$(categoryLink)
-    section.label = categoryLabel
-    form.sections.push(section)
+      const categoryLabel = labelOverlay.categoryLabels.get_11rb$(categoryLink)
+      section.label = categoryLabel
+      form.sections.push(section)
 
-    const categoryHasAttributes = labelOverlay.categoryAttributes.get_11rb$(categoryLink) ? true : false
-    const categoryAttributes = categoryHasAttributes ? labelOverlay.categoryAttributes.get_11rb$(categoryLink).array_hd7ov6$_0 : []
+      const categoryHasAttributes = labelOverlay.categoryAttributes.get_11rb$(categoryLink) ? true : false
+      const categoryAttributes = categoryHasAttributes ? labelOverlay.categoryAttributes.get_11rb$(categoryLink).array_hd7ov6$_0 : []
 
-    categoryAttributes.forEach(attrUuid => {
-      let attrName = leftAttributes.remove_11rb$(attrUuid)
-      let control, translations
-      ({ control, translations } = generateControl(attrUuid, attrName))
-      section.row.controls.push(control)
-      translations.data.forEach(translation => {
-        let formTranslation = form.translations.find(t => t.language == translation.language)
-        formTranslation.data.controls.push({
-          fieldName: control.fieldName,
-          label: translation.label,
-          defaultValue: "",
-          information: translation.information,
-          dataOptions: translation.dataOptions
+      categoryAttributes.forEach(attrUuid => {
+        let attrName = leftAttributes.remove_11rb$(attrUuid)
+        let control, translations
+        ({ control, translations } = generateControl(attrUuid, attrName))
+        section.row.controls.push(control)
+        translations.data.forEach(translation => {
+          let formTranslation = form.translations.find(t => t.language == translation.language)
+          formTranslation.data.controls.push({
+            fieldName: control.fieldName,
+            label: translation.label,
+            defaultValue: "",
+            information: translation.information,
+            dataOptions: translation.dataOptions
+          })
         })
       })
     })
-  })
+  }
   if (leftAttributes.size > 0) {
     const section = _.cloneDeep(FORM_CONSTANTS.Section)
     section.name = _.domUniqueID("section_")

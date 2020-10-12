@@ -5,6 +5,8 @@
                    :is="CONTROL_TYPES[control.type].source.template"
                    :key="control.name"
                    :control="control"
+                   :valid="isControlValid(control)"
+                   :warned="isControlWarned(control)"
                    :ref="control.name"
                    input-class="col-md-7"
                    :label-position="labelPosition">
@@ -35,16 +37,37 @@
                 </div>
                 <div class="col-md-1" />
             </template>
+            <template v-slot:errors>
+                <template v-if="controlErrors(control, 'error').length > 0" >
+                    <div class="col-md-1 errors-icon">
+                      <font-awesome-icon :icon="faExclamationTriangle" />
+                    </div>
+                    <div class="col-md-10 errors">
+                      {{ controlErrors(control, 'error') }}
+                    </div>
+                    <div class="col-md-1" />
+                </template>
+                <template v-if="controlErrors(control, 'warning').length > 0" >
+                    <div class="col-md-1 warning-icon">
+                      <font-awesome-icon :icon="faExclamationTriangle" />
+                    </div>
+                    <div class="col-md-10 warning">
+                      {{ controlErrors(control, 'warning') }}
+                    </div>
+                    <div class="col-md-1" />
+                </template>
+            </template>
         </component>
     </div>
 </template>
 
 <script>
+    import { mapGetters } from 'vuex'
     import {FORM_CONSTANTS} from "@/config/constants";
     import {CONTROL_TYPES} from "@/config/control_constant";
     import {eventBus, EventHandlerConstant} from '@/template/handler/event_handler';
     import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-    import { faPencilAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
+    import { faPencilAlt, faTimes, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
     import {Hooks} from '@/template/components/hook_lists';
     import {ControlHandler} from '@/template/handler/control_handler';
 
@@ -61,10 +84,24 @@
         },
         data: () => ({
             CONTROL_TYPES,
-            faPencilAlt, faTimes,
+            faPencilAlt, faTimes, faExclamationTriangle,
             editing_control: null,
         }),
+        computed: {
+            ...mapGetters('ControlErrors', ['invalid_controls', 'warned_controls', 'control_errors']),
+        },
         methods: {
+            isControlValid(control) {
+                return !this.invalid_controls.includes(control.name)
+            },
+            isControlWarned(control) {
+                return this.warned_controls.includes(control.name)
+            },
+            controlErrors(control, type = null) {
+              const errors = this.control_errors(control.name)
+              const filtered = type ? errors.filter(e => e.type == type) : errors
+              return filtered.map(e => e.msg).join(', ')
+            },
             addControl(controlType) {
                 var controlInfo = _.cloneDeep(FORM_CONSTANTS.Control);
                 controlInfo.type = controlType;
@@ -272,5 +309,29 @@
       text-align: justify;
       font-style: italic;
       color: #6a6a6a;
+    }
+
+
+    .errors {
+      &-icon {
+        padding-top: 10px;
+        color: red;
+      }
+
+      padding-top: 10px;
+      font-weight: 600;
+      text-align: justify;
+      color: #2c3e50;
+    }
+
+    .warning {
+      &-icon {
+        padding-top: 10px;
+        color: #a5a5a5;
+      }
+
+      padding-top: 10px;
+      text-align: justify;
+      color: #2c3e50;
     }
 </style>

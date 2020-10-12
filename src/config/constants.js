@@ -51,6 +51,7 @@ FORM_CONSTANTS.Control = {
 
     // validation
     required: false,
+    errors: [],
 
     // attr for number
     isInteger: false,

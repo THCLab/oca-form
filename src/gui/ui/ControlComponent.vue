@@ -1,11 +1,14 @@
 <template>
     <div class="controlItem form-group" :class="control.className">
-        <component :is="controlInstance" :control="control" :label-position="labelPosition">
+        <component :is="controlInstance" :control="control" :isValid="isValid" :label-position="labelPosition">
             <template v-slot:label>
                 <div class="col-md-4">
-                    <label> {{ control.label }} </label>
+                    <label :class="{ pii: control.isPII }"> {{ control.label }} </label>
                     <span v-show="control.required">*</span>
                 </div>
+            </template>
+            <template v-slot:errors>
+                <div class="invalid-feedback">{{ errors }}</div>
             </template>
 
             <template v-slot:information>
@@ -27,7 +30,21 @@
         props: ['control', 'labelPosition'],
         data: () => ({
             controlInstance: null,
+            isValid: true
         }),
+        computed: {
+            errors() {
+                return this.control.errors ? this.control.errors.join(',') : ""
+            }
+        },
+        watch: {
+          'control.errors': {
+            handler() {
+              this.isValid = !(this.control.errors && this.control.errors.length > 0)
+            },
+            deep: true
+          }
+        },
         created() {
             if (!CONTROL_TYPES[this.control.type]) {
                 console.error(`Control type ${this.control.type} doesn't exist to render.`);
@@ -50,5 +67,9 @@
       text-align: justify;
       font-style: italic;
       color: #6a6a6a;
+    }
+
+    .pii {
+      font-weight: 600;
     }
 </style>

@@ -28,7 +28,15 @@ label.underline {
 
 .onSelect {
     /*margin: 0;*/
-    border: 1px solid aqua;
+    border: 2px solid #78BCFF;
+}
+
+.onWarn {
+    background-color: #FFFF99;
+}
+
+.onError {
+    background-color: pink;
 }
 
 .clickable {

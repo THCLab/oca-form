@@ -6,13 +6,17 @@
             <div class="col-md-8">
                 <select2-control v-if="!control.isMultiple"
                                  v-model="control.value"
+                                 :isValid="isValid"
                                  :disabled="this.control.readonly"
                                  :options="dataSource">
+                    <template v-slot:errors><slot name="errors"/></template>
                 </select2-control>
                 <select2-multiple-control v-else
                                           v-model="control.value"
+                                          :isValid="isValid"
                                           :disabled="this.control.readonly"
                                           :options="dataSource">
+                    <template v-slot:errors><slot name="errors"/></template>
                 </select2-multiple-control>
             </div>
 
@@ -44,7 +48,7 @@
     export default {
         name: "SelectControl",
         components: {Select2MultipleControl, Select2Control},
-        props:['control', 'labelPosition'],
+        props:['control', 'isValid', 'labelPosition'],
         data: () => ({
             dataSource: [],
         }),

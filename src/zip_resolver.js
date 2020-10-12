@@ -8,6 +8,7 @@ export const exportToZip = async (schema) => {
       `${schemaName}.json`,
       JSON.stringify(schema.schemaBase, null, 2)
     )
+    zip.file(`${schemaName}/`, null, { dir: true })
     const { schemaBase, ...schemaOverlays } = schema
 
     for(let overlays of Object.values(schemaOverlays)) {
