@@ -1,5 +1,5 @@
-import * as odcaPkg from 'odca'
-const odca = odcaPkg.com.thehumancolossuslab.odca
+import * as ocaPkg from 'oca.js'
+const oca = ocaPkg.com.thehumancolossuslab.oca
 import Kotlin from 'kotlin'
 var HashMap_init = Kotlin.kotlin.collections.HashMap_init_q3lmfv$;
 
@@ -209,7 +209,7 @@ export function renderForm(schemaObjects) {
 }
 
 const deserializeSchema = (schema) => {
-  const facade = new odca.Facade()
+  const facade = new oca.Facade()
   const schemaInput = HashMap_init()
 
   schema.forEach((o, i) => {
