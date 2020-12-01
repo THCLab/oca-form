@@ -62,7 +62,7 @@
         },
         computed: {
             controlStep() {
-                return 1;
+                return "any";
             }
         }
     }
