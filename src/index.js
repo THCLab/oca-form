@@ -6,6 +6,7 @@ import { EventHandlerConstant, eventBus } from '@/template/handler/event_handler
 import PreviewComponent from '@/template/ui/PreviewComponent'
 import MultiPreviewComponent from '@/template/ui/MultiPreviewComponent'
 import FormBuilder from '@/FormBuilder'
+import FormBuilderGui from '@/gui/FormBuilderGui'
 import vuexModulesPlugin from '@/store'
 
 export {
@@ -15,5 +16,6 @@ export {
   EventHandlerConstant, eventBus,
   PreviewComponent, MultiPreviewComponent,
   FormBuilder,
+  FormBuilderGui,
   vuexModulesPlugin
 }
