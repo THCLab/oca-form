@@ -1,10 +1,5 @@
 // icon
-import {faEdit} from '@fortawesome/free-solid-svg-icons/faEdit';
-import {faCalculator} from '@fortawesome/free-solid-svg-icons/faCalculator';
-import {faCalendarAlt} from '@fortawesome/free-solid-svg-icons/faCalendarAlt';
-import {faClock} from '@fortawesome/free-solid-svg-icons/faClock';
-import {faCheck} from '@fortawesome/free-solid-svg-icons/faCheck';
-import {faDatabase} from '@fortawesome/free-solid-svg-icons/faDatabase';
+import {faEdit, faCalculator, faCalendarAlt, faClock, faCheck, faDatabase, faNetworkWired} from '@fortawesome/free-solid-svg-icons';
 
 // GUI Control
 import GUICheckboxControl from '@/gui/ui/controls/CheckboxControl';
@@ -13,6 +8,7 @@ import GUINumberControl from '@/gui/ui/controls/NumberControl';
 import GUISelectControl from '@/gui/ui/controls/SelectControl';
 import GUITextControl from '@/gui/ui/controls/TextControl';
 import GUITimePickerControl from '@/gui/ui/controls/TimePickerControl';
+import GUIReferenceControl from '@/gui/ui/controls/ReferenceControl';
 
 // TEMPLATE Control
 import TEMPLATETextControl from '@/template/ui/common/controls/TextControl';
@@ -21,6 +17,7 @@ import TEMPLATECheckboxControl from '@/template/ui/common/controls/CheckboxContr
 import TEMPLATEDatePickerControl from '@/template/ui/common/controls/DatePickerControl';
 import TEMPLATETimePickerControl from '@/template/ui/common/controls/TimePickerControl';
 import TEMPLATESelectControl from '@/template/ui/common/controls/SelectControl';
+import TEMPLATEReferenceControl from '@/template/ui/common/controls/ReferenceControl';
 
 // CONFIG CONTROL
 import SIDEBARDatePickerControl from '@/template/ui/sidebar_items/DatePickerConfigComponent';
@@ -29,6 +26,7 @@ import SIDEBARSelectControl from '@/template/ui/sidebar_items/SelectConfigCompon
 import SIDEBARNumberControl from '@/template/ui/sidebar_items/NumberConfigComponent';
 import SIDEBARTextControl from '@/template/ui/sidebar_items/TextConfigComponent';
 import SIDEBARCheckboxControl from '@/template/ui/sidebar_items/CheckboxConfigComponent';
+import SIDEBARReferenceControl from '@/template/ui/sidebar_items/ReferenceConfigComponent';
 
 // Template Control
 // special key for control:
@@ -94,6 +92,15 @@ const CONTROL_TYPES = {
             gui: GUICheckboxControl,
             template: TEMPLATECheckboxControl,
             config: SIDEBARCheckboxControl
+        }
+    },
+    reference: {
+        label: "Reference",
+        icon: faNetworkWired,
+        source: {
+            gui: GUIReferenceControl,
+            template: TEMPLATEReferenceControl,
+            config: SIDEBARReferenceControl
         }
     }
 };

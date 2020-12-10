@@ -1,4 +1,4 @@
-import {faEdit, faCalculator, faCalendarAlt, faClock, faCheck, faDatabase} from '@fortawesome/free-solid-svg-icons';
+import {faEdit, faCalculator, faCalendarAlt, faClock, faCheck, faDatabase, faNetworkWired} from '@fortawesome/free-solid-svg-icons';
 
 var FORM_CONSTANTS = {};
 var CONTROL_CONSTANTS = {};
@@ -97,6 +97,10 @@ FORM_CONSTANTS.Type = {
     checkbox: {
         label:"Checkbox",
         icon: faCheck
+    },
+    reference: {
+        label: "Reference",
+        icon: faNetworkWired
     },
 };
 
