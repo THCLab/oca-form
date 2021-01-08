@@ -74,7 +74,7 @@
           }
         },
         mounted() {
-            if (!this.control.readonly) { this.triggerShow() }
+            if (this.control.isPII && !this.control.readonly) { this.triggerShow() }
 
             if (!_.isEmpty(this.control.defaultValue)) {
                 this.control.value = this.control.defaultValue;
