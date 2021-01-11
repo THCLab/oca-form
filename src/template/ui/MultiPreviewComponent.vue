@@ -32,6 +32,7 @@
     import DialogComponent from './DialogComponent';
     import FormBuilderGui from '@/gui/FormBuilderGui';
     import { EventHandlerConstant, eventBus } from '@/template/handler/event_handler'
+    import { serializeFormData } from '@/form_data_serializer'
 
     export default {
         name: "MultiPreviewComponent",
@@ -91,11 +92,12 @@
                 const savedForms = []
                 this.$refs.FormBuilderGui.forEach(form => {
                   const isValid = form.validateValues()
-                  const savedData = Object.assign({}, ...Object.values(form.getValue()))
-                  savedForms.push({ isValid, savedData })
+
+                  const serializedData = serializeFormData(form)
+                  savedForms.push({ isValid, serializedData })
                 })
                 if(savedForms.some(f => !f.isValid)) { return }
-                eventBus.$emit(EventHandlerConstant.SAVE_PREVIEW, savedForms[0].savedData)
+                eventBus.$emit(EventHandlerConstant.SAVE_PREVIEW, savedForms[0].serializedData)
             },
             rejectForm() {
                 eventBus.$emit(EventHandlerConstant.REJECT_PREVIEW, {})

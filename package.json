@@ -1,6 +1,6 @@
 {
   "name": "oca.js-vue",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "repository": "github:THCLab/odca-form",
   "license": "GPL-3.0",
   "main": "dist/main.js",
