@@ -26,6 +26,7 @@
     import DialogComponent from './DialogComponent';
     import FormBuilderGui from '@/gui/FormBuilderGui';
     import { EventHandlerConstant, eventBus } from '@/template/handler/event_handler'
+    import { serializeFormData } from '@/form_data_serializer'
 
     export default {
         name: "PreviewComponent",
@@ -85,8 +86,9 @@
                 const formRef = this.$refs.FormBuilderGui
                 const isValid = formRef.validateValues()
                 if(!isValid) { return }
-                this.savedData = Object.assign({}, ...Object.values(formRef.getValue()))
-                eventBus.$emit(EventHandlerConstant.SAVE_PREVIEW, this.savedData)
+
+                const serializedData = serializeFormData(formRef)
+                eventBus.$emit(EventHandlerConstant.SAVE_PREVIEW, serializedData)
             },
             closeModal() {
                 this.dialogModal.closeModal();

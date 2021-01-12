@@ -16,7 +16,7 @@ export function renderEmptyForm(uuid, label) {
   }
 }
 
-export function renderForm(schemaObjects) {
+export function renderForm(schemaObjects, schemaDRI = null) {
   const schemaData = deserializeSchema(schemaObjects)
   Communicator.publish('store_schema', schemaData)
   const schema = {
@@ -30,6 +30,7 @@ export function renderForm(schemaObjects) {
   const form = {
     uuid: schemaData.uuid,
     label: schemaData.schemaBase.name,
+    DRI: schemaDRI,
     sections: [],
     translations: [],
     type: ""
