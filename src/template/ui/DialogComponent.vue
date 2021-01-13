@@ -18,12 +18,12 @@
 
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" v-if="!readonly" @click="confirmForm" :disabled="processing" v-show="confirmLabel">
+                  <button type="button" class="btn btn-primary" v-if="!readonly || reviewable" @click="confirmForm" :disabled="processing" v-show="confirmLabel">
                     <span class="spinner-border spinner-border-sm"
                       role="status" aria-hidden="true" v-show="confirmProcessing"></span>
                     {{ confirmLabel }}
                   </button>
-                  <button type="button" class="btn btn-danger" v-if="!readonly" @click="rejectForm" :disabled="processing" v-show="rejectLabel">
+                  <button type="button" class="btn btn-danger" v-if="!readonly || reviewable " @click="rejectForm" :disabled="processing" v-show="rejectLabel">
                     <span class="spinner-border spinner-border-sm"
                       role="status" aria-hidden="true" v-show="rejectProcessing"></span>
                     {{ rejectLabel }}
@@ -39,7 +39,7 @@
     export default {
         name: "DialogComponent",
         components: {},
-        props: ['headerLabel', 'size', 'readonly',
+        props: ['headerLabel', 'size', 'readonly', 'reviewable',
           'confirmLabel', 'confirmProcessing',
           'rejectLabel', 'rejectProcessing'
         ],

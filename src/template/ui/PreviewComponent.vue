@@ -1,8 +1,10 @@
 <template>
     <dialog-component ref='DialogModal' size='lg' id="previewModal"
-    :readonly="readonly" :headerLabel="label"
+    :readonly="readonly" :reviewable="reviewable" :headerLabel="label"
     :confirmLabel="confirmLabel ? confirmLabel : 'Save'"
-    :confirmProcessing="confirmProcessing">
+    :confirmProcessing="confirmProcessing"
+    :rejectLabel="rejectLabel"
+    :rejectProcessing="rejectProcessing">
         <template v-slot:header>
             <select
               class="form-control col-md-3"
@@ -31,8 +33,9 @@
     export default {
         name: "PreviewComponent",
         components: { FormBuilderGui, DialogComponent },
-        props: ['form', 'alternatives', 'readonly',
-          'confirmLabel', 'confirmProcessing'],
+        props: ['form', 'alternatives', 'readonly', 'reviewable',
+          'confirmLabel', 'confirmProcessing',
+          'rejectLabel', 'rejectProcessing'],
         data: () => ({
             dialogModal: null,
             selectedLang: null,
@@ -89,6 +92,9 @@
 
                 const serializedData = serializeFormData(formRef)
                 eventBus.$emit(EventHandlerConstant.SAVE_PREVIEW, serializedData)
+            },
+            rejectForm() {
+                eventBus.$emit(EventHandlerConstant.REJECT_PREVIEW, {})
             },
             closeModal() {
                 this.dialogModal.closeModal();
