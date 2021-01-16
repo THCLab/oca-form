@@ -86,7 +86,7 @@ export function renderForm(schemaObjects, schemaDRI = null) {
           }
 
           options = entries.array_hd7ov6$_0.map((entry, index) => {
-            return { id: index, text: entry }
+            return { value: index, label: entry }
           })
           translation.dataOptions = options
         }

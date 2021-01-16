@@ -7,18 +7,18 @@ import {FontAwesomeRegister} from "@/config/font-awesome-register";
 // load jquery
 require('jquery');
 
-// load jquery ui
-import 'webpack-jquery-ui';
-import 'webpack-jquery-ui/css';
+// // load jquery ui
+// import 'webpack-jquery-ui';
+// import 'webpack-jquery-ui/css';
 
-// load timepicker
-require('@/assets/js/jquery.timepicker.min');
-require('@/assets/css/jquery.timepicker.min.css');
-require('@/assets/css/v-form.css');
+// // load timepicker
+// require('@/assets/js/jquery.timepicker.min');
+// require('@/assets/css/jquery.timepicker.min.css');
+// require('@/assets/css/v-form.css');
 
 // load bootstrap
-require('popper.js');
-require('bootstrap');
+// require('popper.js');
+// require('bootstrap');
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // require('scriptjs');
 

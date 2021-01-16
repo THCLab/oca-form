@@ -1,64 +1,64 @@
 <template>
-    <div class="col-md-12 mb-2 rowItem row" :id="row.name">
+    <!-- <div class="col-md-12 mb-2 rowItem row" :id="row.name"> -->
 
-        <component v-for="(control) in row.controls"
-                   :is="CONTROL_TYPES[control.type].source.template"
-                   :key="control.name"
-                   :control="control"
-                   :valid="isControlValid(control)"
-                   :warned="isControlWarned(control)"
-                   :ref="control.name"
-                   input-class="col-md-7"
-                   :label-position="labelPosition">
-            <template v-slot:label>
-                <div class="col-md-4">
-                    <label> {{ control.label }} </label>
-                    <span v-show="control.required">*</span>
-                    <span v-show="control.attrName"> [
-                      <span v-show="control.isPII">PII: </span>
-                      {{ control.attrName }}
-                    ]</span>
-                </div>
-            </template>
+    <!--     <component v-for="(control) in row.controls" -->
+    <!--                :is="CONTROL_TYPES[control.type].source.template" -->
+    <!--                :key="control.name" -->
+    <!--                :control="control" -->
+    <!--                :valid="isControlValid(control)" -->
+    <!--                :warned="isControlWarned(control)" -->
+    <!--                :ref="control.name" -->
+    <!--                input-class="col-md-7" -->
+    <!--                :label-position="labelPosition"> -->
+    <!--         <template v-slot:label> -->
+    <!--             <div class="col-md-4"> -->
+    <!--                 <label> {{ control.label }} </label> -->
+    <!--                 <span v-show="control.required">*</span> -->
+    <!--                 <span v-show="control.attrName"> [ -->
+    <!--                   <span v-show="control.isPII">PII: </span> -->
+    <!--                   {{ control.attrName }} -->
+    <!--                 ]</span> -->
+    <!--             </div> -->
+    <!--         </template> -->
 
-            <template v-slot:options>
-                <div class="col-md-1 options">
-                    <font-awesome-icon :icon="faPencilAlt"
-                    @click="openConfig(control)" class="clickable" />
-                    <font-awesome-icon :icon="faTimes"
-                    @click="removeControl(control)" class="clickable" />
-                </div>
-            </template>
+    <!--         <template v-slot:options> -->
+    <!--             <div class="col-md-1 options"> -->
+    <!--                 <font-awesome-icon :icon="faPencilAlt" -->
+    <!--                 @click="openConfig(control)" class="clickable" /> -->
+    <!--                 <font-awesome-icon :icon="faTimes" -->
+    <!--                 @click="removeControl(control)" class="clickable" /> -->
+    <!--             </div> -->
+    <!--         </template> -->
 
-            <template v-slot:information>
-                <div class="col-md-1" />
-                <div class="col-md-10 information">
-                  {{ control.information }}
-                </div>
-                <div class="col-md-1" />
-            </template>
-            <template v-slot:errors>
-                <template v-if="controlErrors(control, 'error').length > 0" >
-                    <div class="col-md-1 errors-icon">
-                      <font-awesome-icon :icon="faExclamationTriangle" />
-                    </div>
-                    <div class="col-md-10 errors">
-                      {{ controlErrors(control, 'error') }}
-                    </div>
-                    <div class="col-md-1" />
-                </template>
-                <template v-if="controlErrors(control, 'warning').length > 0" >
-                    <div class="col-md-1 warning-icon">
-                      <font-awesome-icon :icon="faExclamationTriangle" />
-                    </div>
-                    <div class="col-md-10 warning">
-                      {{ controlErrors(control, 'warning') }}
-                    </div>
-                    <div class="col-md-1" />
-                </template>
-            </template>
-        </component>
-    </div>
+    <!--         <template v-slot:information> -->
+    <!--             <div class="col-md-1" /> -->
+    <!--             <div class="col-md-10 information"> -->
+    <!--               {{ control.information }} -->
+    <!--             </div> -->
+    <!--             <div class="col-md-1" /> -->
+    <!--         </template> -->
+    <!--         <template v-slot:errors> -->
+    <!--             <template v-if="controlErrors(control, 'error').length > 0" > -->
+    <!--                 <div class="col-md-1 errors-icon"> -->
+    <!--                   <font-awesome-icon :icon="faExclamationTriangle" /> -->
+    <!--                 </div> -->
+    <!--                 <div class="col-md-10 errors"> -->
+    <!--                   {{ controlErrors(control, 'error') }} -->
+    <!--                 </div> -->
+    <!--                 <div class="col-md-1" /> -->
+    <!--             </template> -->
+    <!--             <template v-if="controlErrors(control, 'warning').length > 0" > -->
+    <!--                 <div class="col-md-1 warning-icon"> -->
+    <!--                   <font-awesome-icon :icon="faExclamationTriangle" /> -->
+    <!--                 </div> -->
+    <!--                 <div class="col-md-10 warning"> -->
+    <!--                   {{ controlErrors(control, 'warning') }} -->
+    <!--                 </div> -->
+    <!--                 <div class="col-md-1" /> -->
+    <!--             </template> -->
+    <!--         </template> -->
+    <!--     </component> -->
+    <!-- </div> -->
 </template>
 
 <script>

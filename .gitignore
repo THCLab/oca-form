@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+Session.vim
 
 # local env files
 .env.local

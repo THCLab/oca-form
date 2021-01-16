@@ -84,7 +84,8 @@
             },
         },
         created() {
-            // this.form = JSON.parse(localStorage.getItem('BUILD_FORM'));
+          console.log("ble");
+          console.log(this.form);
         }
     }
 </script>

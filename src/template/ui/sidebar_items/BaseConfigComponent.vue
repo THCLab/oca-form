@@ -28,23 +28,23 @@
                 <label>PII</label>
             </div>
             <div class="col-md-10">
-                <vue-bootstrap-typeahead
-                  ref="inputAttributeName"
-                  :class="{
-                    error: errorLabels(control, 'error').includes('attrName'),
-                    warning: errorLabels(control, 'warning').includes('attrName')
-                  }"
-                  :showOnFocus="true"
-                  :minMatchingChars="1"
-                  @hit="control.isPII = true"
-                  v-model="control.attrName"
-                  :data="suggest_list"
-                >
-                    <template slot="suggestion" slot-scope="{ data, htmlText }">
-                        PII:
-                        <span v-html="htmlText"></span>
-                    </template>
-                </vue-bootstrap-typeahead>
+                <!-- <vue-bootstrap-typeahead -->
+                <!--   ref="inputAttributeName" -->
+                <!--   :class="{ -->
+                <!--     error: errorLabels(control, 'error').includes('attrName'), -->
+                <!--     warning: errorLabels(control, 'warning').includes('attrName') -->
+                <!--   }" -->
+                <!--   :showOnFocus="true" -->
+                <!--   :minMatchingChars="1" -->
+                <!--   @hit="control.isPII = true" -->
+                <!--   v-model="control.attrName" -->
+                <!--   :data="suggest_list" -->
+                <!-- > -->
+                <!--     <template slot="suggestion" slot-scope="{ data, htmlText }"> -->
+                <!--         PII: -->
+                <!--         <span v-html="htmlText"></span> -->
+                <!--     </template> -->
+                <!-- </vue-bootstrap-typeahead> -->
             </div>
             <div class="col-md-2">
                 <input type="checkbox" name="isPII" v-model="control.isPII">
@@ -54,13 +54,11 @@
 </template>
 
 <script>
-    import VueBootstrapTypeahead from "vue-typeahead-bootstrap";
     import { TYPE_MAPPER } from '@/config/constants'
     import { mapState, mapGetters } from 'vuex'
 
     export default {
         name: "BaseConfigComponent",
-        components: { VueBootstrapTypeahead },
         props: {
             control: {
                 type: Object
