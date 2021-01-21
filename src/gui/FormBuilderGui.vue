@@ -85,6 +85,15 @@
         },
         created() {
             // this.form = JSON.parse(localStorage.getItem('BUILD_FORM'));
+            if(this.readonly) {
+                this.form.sections.forEach(section => {
+                    section.row.controls.forEach(control => {
+                        if (control) {
+                          control.readonly = true
+                        }
+                    })
+                })
+            }
         }
     }
 </script>

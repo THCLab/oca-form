@@ -58,7 +58,7 @@
                 this.formData._uniqueId = Math.random();
                 this.label = this.formData.label
                 if(formInput) {
-                    this.fillForm(formInput)
+                    this.fillForm(this.formData, formInput)
                     if(this.formReadonly == null) {
                         this.formReadonly = true
                     }
@@ -74,14 +74,27 @@
                 // open
                 this.dialogModal.openModal()
             },
-            fillForm(input) {
-                this.formData.sections.forEach(section => {
+            fillForm(formData, input) {
+                let payload
+                if (Object.keys(input)[0].startsWith('DRI:')) {
+                  payload = input[`DRI:${formData.DRI}`].p
+                  Object.entries(payload).forEach(([attrName, value]) => {
+                    if (value.startsWith('DRI:')) {
+                      const control = formData.sections[0].row.controls.find(c => c.attrName == attrName)
+                      this.fillForm(control.referenceSchema.form, input)
+                    }
+                  })
+                } else {
+                  payload = input
+                }
+
+                formData.sections.forEach(section => {
                     section.row.controls.forEach(control => {
-                        if(input[control.attrName] == null) {
+                        if(payload[control.attrName] == null) {
                             eventBus.$emit(EventHandlerConstant.ERROR, "Invalid data")
                             throw "Invalid data"
                         }
-                        control.value = input[control.attrName]
+                        control.value = payload[control.attrName]
                     })
                 })
             },

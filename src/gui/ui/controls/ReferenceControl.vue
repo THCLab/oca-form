@@ -1,39 +1,26 @@
 <template>
   <div>
     <div class="row" v-if="labelPosition === 'left'">
-      <slot name="label"/>
+      <!-- <slot name="label"/> -->
 
-      <div class="col-md-8">
-        <a v-if="control.attrType == 'URI' && control.readonly == true"
-           target="_blank"
-           :href="control.value">{{control.value}}</a>
-
-        <div class="input-group" v-else>
-          <input v-if="showPii"
-                 type="text"
-                 class="form-control"
-                 :class="{ 'is-invalid': !isValid }"
-                 :readonly="this.control.readonly"
-                 :name="control.fieldName"
-                 v-model="control.value" />
-
-          <input v-else
-                 type="password"
-                 class="form-control"
-                 :class="{ 'is-invalid': !isValid }"
-                 :readonly="this.control.readonly"
-                 :name="control.fieldName"
-                 v-model="control.value" />
-
-          <div class="input-group-append" v-if="control.isPII">
-            <span class="input-group-text clickable" @click="triggerShow">
-              <font-awesome-icon :icon="icon"></font-awesome-icon>
-            </span>
-          </div>
-          <slot name="errors"/>
+      <div class="col-md-12">
+        <div class="row align-items-center" style="padding-bottom: 10px;">
+          <h5 class="offset-md-1 col-md-2"> {{ form.label }} </h5>
+          <select
+            class="form-control col-md-3"
+            v-model="selectedLang">
+            <option v-for="alt in alternatives">{{alt.language}}</option>
+          </select>
         </div>
+        <form-builder-gui
+          :selected-lang="selectedLang"
+          :form="form"
+          :alternatives="alternatives"
+          :readonly="control.readonly"
+          :key="control.referenceSchema.form._uniqueId"></form-builder-gui>
       </div>
 
+      <slot name="errors"/>
       <slot name="information"/>
     </div>
     <div v-else class="form-group">
@@ -55,11 +42,15 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 export default {
   name: "ReferenceControl",
-  components: {FontAwesomeIcon},
+  components: {
+    FormBuilderGui: () => import('@/gui/FormBuilderGui'),
+    FontAwesomeIcon },
   props: ['control', 'isValid', 'labelPosition'],
   data: function() {
     return {
-      showPii: !this.control.isPII,
+      form: this.control.referenceSchema.form,
+      alternatives: this.control.referenceSchema.form.translations,
+      selectedLang: this.control.referenceSchema.form.translations[0].language,
       icon: 'eye-slash'
     }
   },
@@ -71,6 +62,18 @@ export default {
       } else {
         this.icon = "eye-slash"
       }
+    }
+  },
+  created() {
+    if(this.control && this.control.readonly) {
+        this.control.referenceSchema.form.readonly = true
+        this.control.referenceSchema.form.sections.forEach( section => {
+            section.row.controls.forEach(control => {
+              if (control) {
+                control.readonly = true
+              }
+            })
+        })
     }
   },
   mounted() {

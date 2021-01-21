@@ -38,7 +38,11 @@ FormHandler.getValue = function (form) {
           // retrieve value in control
           _.each(controls, control => {
               // special get value
-              controlData[control.attrName] = getControlValue(control, `#${sectionInfo.name}_gui_body`);
+              if (control.type == "reference") {
+                  controlData[control.attrName] = control.attrType
+              } else {
+                  controlData[control.attrName] = getControlValue(control, `#${sectionInfo.name}_gui_body`);
+              }
           });
 
           // set data
@@ -52,7 +56,11 @@ FormHandler.getValue = function (form) {
 
               // retrieve value in control
               _.each(controls, control => {
-                  controlData[control.attrName] = getControlValue(control, `#${sectionInfo.name}_gui_body .rowDynamic_${insIndex}`);
+                  if (control.type == "reference") {
+                      controlData[control.attrName] = control.attrType
+                  } else {
+                      controlData[control.attrName] = getControlValue(control, `#${sectionInfo.name}_gui_body .rowDynamic_${insIndex}`);
+                  }
               });
 
               // populate data

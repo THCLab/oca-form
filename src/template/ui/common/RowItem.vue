@@ -169,13 +169,16 @@
 
             // control
             openConfig(controlInfo) {
+                const controlInfoClone = _.cloneDeep(controlInfo)
+                controlInfoClone.attrType = controlInfo.attrType
+
                 ControlHandler.clearSelect();
                 ControlHandler.setSelect(controlInfo.name);
                 this.editing_control = controlInfo;
               eventBus.$emit(
                 EventHandlerConstant.ACTIVATE_EDITOR_SIDEBAR,
                 { formUuid: this.formUuid,
-                  controlInfo: _.cloneDeep(controlInfo) }
+                  controlInfo: controlInfoClone }
               );
             }
         },
