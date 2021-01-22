@@ -19,7 +19,7 @@ export function renderEmptyForm(uuid, label) {
 }
 
 const fetchSchema = async function(DRI) {
-  const ocaRepo = 'https://repository.oca.argo.colossi.newtork'
+  const ocaRepo = 'https://repository.oca.argo.colossi.network'
   const r = await axios.get(`${ocaRepo}/api/v3/schemas/${DRI}`)
   return r.data
 }
