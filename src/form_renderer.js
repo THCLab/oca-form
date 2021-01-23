@@ -106,7 +106,7 @@ export async function renderForm(schemaObjects, schemaDRI = null) {
     if (type == "reference") {
       referenceDRI = attrType.split(':')[1]
       const referenceOcaSchema = cache[referenceDRI]
-      referenceSchema = await renderForm([referenceOcaSchema.schema_base, ...referenceOcaSchema.overlays], referenceDRI)
+      referenceSchema = renderForm([referenceOcaSchema.schema_base, ...referenceOcaSchema.overlays], referenceDRI)
     }
 
     const controlName = _.domUniqueID(`control_${type}_`)
@@ -186,7 +186,7 @@ export async function renderForm(schemaObjects, schemaDRI = null) {
           encoding: encoding || defaultEncoding,
           information: information,
           timeFormat: "HH:mm",
-          referenceSchema: referenceSchema || null
+          referenceSchema: await referenceSchema || null
         }
       },
       translations: controlTranslations
@@ -212,7 +212,7 @@ export async function renderForm(schemaObjects, schemaDRI = null) {
   const labelOverlay = labelOverlays[0]
   if(labelOverlay) {
     const categories = labelOverlay.attr_categories
-    categories.forEach(categoryLink => {
+    categories.forEach(async categoryLink => {
       const section = _.cloneDeep(FORM_CONSTANTS.Section)
       section.name = _.domUniqueID("section_")
       section.clientKey = section.name
@@ -224,11 +224,35 @@ export async function renderForm(schemaObjects, schemaDRI = null) {
       const categoryHasAttributes = labelOverlay.cat_attributes[categoryLink] ? true : false
       const categoryAttributes = categoryHasAttributes ? labelOverlay.cat_attributes[categoryLink] : []
 
-      section.row.controls = new Array(categoryAttributes.length)
-      categoryAttributes.forEach(async (attrName, i) => {
-        leftAttributes = leftAttributes.filter(attr => attr != attrName)
+      section.row.controls = await Promise.all(
+        categoryAttributes.map(async attrName => {
+          leftAttributes = leftAttributes.filter(attr => attr != attrName)
+          const { control, translations } = await generateControl(attrName)
+          translations.data.forEach(translation => {
+            let formTranslation = form.translations.find(t => t.language == translation.language)
+            formTranslation.data.controls.push({
+              fieldName: control.fieldName,
+              label: translation.label,
+              defaultValue: "",
+              information: translation.information,
+              dataOptions: translation.dataOptions
+            })
+          })
+          return control
+        })
+      )
+    })
+  }
+
+  if (leftAttributes.size > 0) {
+    const section = _.cloneDeep(FORM_CONSTANTS.Section)
+    section.name = _.domUniqueID("section_")
+    section.clientKey = section.name
+    form.sections.push(section)
+
+    section.row.controls = await Promise.all(
+      leftAttributes.map(async attrName => {
         const { control, translations } = await generateControl(attrName)
-        section.row.controls[i] = control
         translations.data.forEach(translation => {
           let formTranslation = form.translations.find(t => t.language == translation.language)
           formTranslation.data.controls.push({
@@ -239,36 +263,15 @@ export async function renderForm(schemaObjects, schemaDRI = null) {
             dataOptions: translation.dataOptions
           })
         })
+        return control
       })
-    })
-  }
-
-  if (leftAttributes.size > 0) {
-    const section = _.cloneDeep(FORM_CONSTANTS.Section)
-    section.name = _.domUniqueID("section_")
-    section.clientKey = section.name
-    form.sections.push(section)
-
-    section.row.controls = new Array(leftAttributes.length)
-    leftAttributes.forEach(async (attrName, i) => {
-      const { control, translations } = await generateControl(attrName)
-      section.row.controls[i] = control
-      translations.data.forEach(translation => {
-        let formTranslation = form.translations.find(t => t.language == translation.language)
-        formTranslation.data.controls.push({
-          fieldName: control.fieldName,
-          label: translation.label,
-          defaultValue: "",
-          information: translation.information,
-          dataOptions: translation.dataOptions
-        })
-      })
-    })
+    )
   }
 
   return { schema, form }
 }
 
+  /*
 const deserializeSchema = (schema) => {
   const facade = new oca.Facade()
   const schemaInput = HashMap_init()
@@ -289,3 +292,4 @@ const deserializeSchema = (schema) => {
 
   return facade.deserializeSchemas([schemaInput])[0]
 }
+  */
